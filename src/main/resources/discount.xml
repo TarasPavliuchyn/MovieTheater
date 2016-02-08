@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+ 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+ 		http://www.springframework.org/schema/util
+ 		http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+
+    <bean id="dateFormat" class="java.text.SimpleDateFormat">
+        <constructor-arg value="dd/MM"/>
+    </bean>
+
+    <util:list id="discountList">
+        <ref bean="birthdayDiscountStrategy"/>
+        <ref bean="regularDiscountStrategy"/>
+    </util:list>
+
+    <bean id="discountStrategy" class="com.epam.spring.theater.util.AbstractDiscountStrategy" abstract="true">
+        <property name="dateFormat"  ref="dateFormat"/>
+    </bean>
+
+    <bean id="birthdayDiscountStrategy" class="com.epam.spring.theater.util.impl.BirthdayDiscountStrategy" parent="discountStrategy">
+        <property name="birthdayDiscount"  value="${birthday.discount}"/>
+    </bean>
+
+    <bean id="regularDiscountStrategy" class="com.epam.spring.theater.util.impl.RegularDiscountStrategy" parent="discountStrategy">
+        <property name="regularDiscount"  value="${regular.discount}"/>
+        <property name="viewedMovieForDiscount"  value="${viewed.movie}"/>
+    </bean>
+
+</beans>

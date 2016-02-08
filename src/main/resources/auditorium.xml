@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+ 		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+ 		http://www.springframework.org/schema/util
+ 		http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+
+    <bean id="auditoriumService" class="com.epam.spring.theater.service.impl.AuditoriumServiceImpl">
+        <property name="auditoriums" ref="auditoriumMap"/>
+    </bean>
+
+    <util:map id="auditoriumMap">
+        <entry key="${auditorium.red.name}">
+            <bean class="com.epam.spring.theater.model.Auditorium"
+                  p:name="${auditorium.red.name}"
+                  p:seatNumber="${auditorium.red.seats}"
+                  p:vipSeats="#{'${auditorium.red.vip.seats}'.split(',')}"/>
+        </entry>
+        <entry key="${auditorium.blue.name}">
+            <bean class="com.epam.spring.theater.model.Auditorium"
+                  p:name="${auditorium.blue.name}"
+                  p:seatNumber="${auditorium.blue.seats}"
+                  p:vipSeats="#{'${auditorium.blue.vip.seats}'.split(',')}"/>
+        </entry>
+        <entry key="${auditorium.green.name}">
+            <bean class="com.epam.spring.theater.model.Auditorium"
+                  p:name="${auditorium.green.name}"
+                  p:seatNumber="${auditorium.green.seats}"
+                  p:vipSeats="#{'${auditorium.green.vip.seats}'.split(',')}"/>
+        </entry>
+    </util:map>
+
+</beans>
