@@ -1,6 +1,6 @@
 package com.epam.spring.theater.dao.impl;
 
-import com.epam.spring.theater.dao.GenericDaoImpl;
+import com.epam.spring.theater.dao.CrudDaoImpl;
 import com.epam.spring.theater.dao.TicketDao;
 import com.epam.spring.theater.model.Event;
 import com.epam.spring.theater.model.Ticket;
@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class TicketDaoImpl extends GenericDaoImpl<Ticket, Integer> implements TicketDao {
+public class TicketDaoImpl extends CrudDaoImpl<Ticket, Integer> implements TicketDao {
 
     @Override
     public List<Ticket> getPurchasedTickets(Event event, Date date) {
@@ -22,7 +22,7 @@ public class TicketDaoImpl extends GenericDaoImpl<Ticket, Integer> implements Ti
     }
 
     @Override
-    public void create(Ticket ticket) {
-        super.create(ticket.getTicketId(), ticket);
+    public void createOrUpdate(Ticket ticket) {
+        super.createOrUpdate(ticket.getTicketId(), ticket);
     }
 }

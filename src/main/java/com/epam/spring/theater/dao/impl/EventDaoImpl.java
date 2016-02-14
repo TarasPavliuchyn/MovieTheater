@@ -1,12 +1,11 @@
 package com.epam.spring.theater.dao.impl;
 
 import com.epam.spring.theater.dao.EventDao;
-import com.epam.spring.theater.dao.GenericDaoImpl;
+import com.epam.spring.theater.dao.CrudDaoImpl;
 import com.epam.spring.theater.model.Auditorium;
 import com.epam.spring.theater.model.Event;
 import org.apache.commons.lang3.Range;
 import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -14,11 +13,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class EventDaoImpl extends GenericDaoImpl<Event, String> implements EventDao {
+public class EventDaoImpl extends CrudDaoImpl<Event, String> implements EventDao {
 
     @Override
     public Event create(Event event) {
-        return super.create(event.getName(), event);
+        return super.createOrUpdate(event.getName(), event);
     }
 
     @Override

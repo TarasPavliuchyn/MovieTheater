@@ -6,19 +6,19 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class GenericDaoImpl<E, K> implements GenericDao<E, K> {
+public abstract class CrudDaoImpl<E, K> implements CrudDao<E, K> {
 
     private Map<K, E> storage = new HashMap<>();
     private Class<E> type;
 
-    public GenericDaoImpl() {
+    public CrudDaoImpl() {
         Type t = getClass().getGenericSuperclass();
         ParameterizedType pt = (ParameterizedType) t;
         type = (Class) pt.getActualTypeArguments()[0];
     }
 
     @Override
-    public E create(K id, E model) {
+    public E createOrUpdate(K id, E model) {
         return storage.put(id, model);
     }
 

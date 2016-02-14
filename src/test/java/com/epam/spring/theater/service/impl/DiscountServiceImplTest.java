@@ -1,5 +1,6 @@
 package com.epam.spring.theater.service.impl;
 
+import com.epam.spring.theater.AbstractTestSuite;
 import com.epam.spring.theater.model.*;
 import com.epam.spring.theater.service.DiscountService;
 import org.junit.Test;

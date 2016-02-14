@@ -1,5 +1,6 @@
 package com.epam.spring.theater.service.impl;
 
+import com.epam.spring.theater.AbstractTestSuite;
 import com.epam.spring.theater.model.Auditorium;
 import com.epam.spring.theater.model.Event;
 import com.epam.spring.theater.model.Rating;

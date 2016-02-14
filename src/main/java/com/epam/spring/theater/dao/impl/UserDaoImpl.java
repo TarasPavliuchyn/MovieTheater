@@ -1,6 +1,6 @@
 package com.epam.spring.theater.dao.impl;
 
-import com.epam.spring.theater.dao.GenericDaoImpl;
+import com.epam.spring.theater.dao.CrudDaoImpl;
 import com.epam.spring.theater.dao.UserDao;
 import com.epam.spring.theater.model.Ticket;
 import com.epam.spring.theater.model.User;
@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @Repository
-public class UserDaoImpl extends GenericDaoImpl<User, Integer> implements UserDao {
+public class UserDaoImpl extends CrudDaoImpl<User, Integer> implements UserDao {
 
     @Override
     public User create(User user) {
@@ -20,8 +20,13 @@ public class UserDaoImpl extends GenericDaoImpl<User, Integer> implements UserDa
         if (users.containsValue(user)) {
             throw new UserExistException("User already exists");
         }
-        super.create(user.getUserId(), user);
+        super.createOrUpdate(user.getUserId(), user);
         return user;
+    }
+
+    @Override
+    public User update(User user) {
+        return super.createOrUpdate(user.getUserId(), user);
     }
 
     @Override

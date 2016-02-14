@@ -2,9 +2,9 @@ package com.epam.spring.theater.dao;
 
 import java.util.Collection;
 
-public interface GenericDao<E, K> {
+public interface CrudDao<E, K> {
 
-    E create(K key, E model);
+    E createOrUpdate(K key, E model);
 
     E find(K id);
 

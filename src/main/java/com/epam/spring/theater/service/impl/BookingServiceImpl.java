@@ -1,6 +1,7 @@
 package com.epam.spring.theater.service.impl;
 
 import com.epam.spring.theater.dao.TicketDao;
+import com.epam.spring.theater.dao.UserDao;
 import com.epam.spring.theater.model.Event;
 import com.epam.spring.theater.model.Rating;
 import com.epam.spring.theater.model.Ticket;
@@ -31,6 +32,9 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private TicketDao ticketDao;
 
+    @Autowired
+    private UserDao userDao;
+
     @Override
     public BigDecimal getTicketPrice(Event event, Date dateTime, Integer seat, User user) {
         BigDecimal basePrice = event.getBasePrice();
@@ -48,8 +52,10 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void bookTicket(User user, Ticket ticket) {
         ticket.setBooked(true);
+        ticketDao.createOrUpdate(ticket);
         if (user.getEmail() != null && !user.getEmail().isEmpty()) {
             user.getTickets().add(ticket);
+            userDao.update(user);
         }
     }
 
@@ -60,6 +66,6 @@ public class BookingServiceImpl implements BookingService {
 
     private BigDecimal calculateDiscount(User user, Event event, Date dateTime) {
         Map<Ticket, BigDecimal> discounts = discountService.getDiscount(user, event, dateTime);
-        return discounts.values().stream().findFirst().get();
+        return discounts.values().stream().findFirst().orElse(BigDecimal.ZERO);
     }
 }

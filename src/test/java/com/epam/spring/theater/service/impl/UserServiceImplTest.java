@@ -1,5 +1,6 @@
 package com.epam.spring.theater.service.impl;
 
+import com.epam.spring.theater.AbstractTestSuite;
 import com.epam.spring.theater.dao.impl.UserExistException;
 import com.epam.spring.theater.model.Event;
 import com.epam.spring.theater.model.Ticket;

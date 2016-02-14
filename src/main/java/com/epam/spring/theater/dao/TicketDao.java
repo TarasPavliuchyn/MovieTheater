@@ -9,5 +9,5 @@ import java.util.List;
 public interface TicketDao {
     List<Ticket> getPurchasedTickets(Event event, Date date);
 
-    void create(Ticket ticket);
+    void createOrUpdate(Ticket ticket);
 }

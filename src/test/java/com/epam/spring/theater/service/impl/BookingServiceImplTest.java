@@ -1,5 +1,6 @@
 package com.epam.spring.theater.service.impl;
 
+import com.epam.spring.theater.AbstractTestSuite;
 import com.epam.spring.theater.dao.TicketDao;
 import com.epam.spring.theater.model.*;
 import com.epam.spring.theater.service.BookingService;
@@ -21,6 +22,7 @@ public class BookingServiceImplTest extends AbstractTestSuite {
     private Date dateTime;
     private Event event;
     private User user;
+    private Ticket ticket;
 
     @Value("${birthday.discount}")
     private BigDecimal birthdayDiscount;
@@ -44,7 +46,7 @@ public class BookingServiceImplTest extends AbstractTestSuite {
         user = new User.UserBuilder("taras_pavlichyn@epam.com", "qwerty")
                 .fullName("Taras Pavliuchyn")
                 .birthDay(getFormatter().parse("18/03/1990/00:00")).role(UserRole.CUSTOMER).build();
-        Ticket ticket = createTicket(event, dateTime, false);
+        ticket = createTicket(event, dateTime, false);
         user.getTickets().add(ticket);
     }
 
@@ -59,15 +61,14 @@ public class BookingServiceImplTest extends AbstractTestSuite {
 
     @Test
     public void testBookTicket() throws Exception {
-        Ticket ticket = createTicket(new Event(), new Date(), false);
+        Ticket ticket = createTicket(event, new Date(), false);
         bookingService.bookTicket(user, ticket);
         assertTrue(ticket.isBooked());
     }
 
     @Test
     public void testGetTicketsForEvent() throws Exception {
-        Ticket ticket = createTicket(event, dateTime, false);
-        ticketDao.create(ticket);
+        ticketDao.createOrUpdate(ticket);
         List<Ticket> tickets = bookingService.getTicketsForEvent(event, dateTime);
         assertFalse(tickets.isEmpty());
     }

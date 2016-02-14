@@ -1,4 +1,4 @@
-package com.epam.spring.theater.service.impl;
+package com.epam.spring.theater;
 
 import com.epam.spring.theater.model.Auditorium;
 import com.epam.spring.theater.model.Event;

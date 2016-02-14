@@ -20,4 +20,6 @@ public interface UserDao {
     List<Ticket> getBookedTickets(Integer userId);
 
     List<User> findAll();
+
+    User update(User user);
 }
