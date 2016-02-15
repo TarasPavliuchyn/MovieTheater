@@ -5,7 +5,9 @@ import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
@@ -19,6 +21,7 @@ public class User {
     private Date birthDay;
     private UserRole role;
     private List<Ticket> tickets = new ArrayList<>();
+    private Map<Date, String> luckyTickets = new HashMap<>();
 
     private User(UserBuilder builder) {
         this.userId = count.incrementAndGet();

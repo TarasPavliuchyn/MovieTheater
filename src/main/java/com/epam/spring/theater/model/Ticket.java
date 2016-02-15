@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -17,6 +18,7 @@ public class Ticket  implements Serializable{
     private boolean discounted;
     private Event event;
     private Date dateTime;
+    private BigDecimal ticketPrice;
 
     public Ticket() {
         this.ticketId = count.incrementAndGet();
