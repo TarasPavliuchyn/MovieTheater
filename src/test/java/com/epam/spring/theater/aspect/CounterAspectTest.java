@@ -19,8 +19,6 @@ import static org.junit.Assert.assertEquals;
 public class CounterAspectTest extends AbstractTestSuite {
 
     private static final String EVENT_NAME = "The Hateful Eight";
-    private static final String OTHER_MOVIE = "The Shining";
-    private static final String GREEN = "Green";
     private static final String RED = "Red";
     private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy/hh:mm");
     private Date dateTime;
@@ -51,7 +49,7 @@ public class CounterAspectTest extends AbstractTestSuite {
     }
 
     @Test
-    public void testCountAccessByName() {
+    public void testCountAspectAccessByName() {
         for (int i = 0; i < ACCESS_COUNT; i++) {
             eventService.getByName(EVENT_NAME);
         }
@@ -60,7 +58,7 @@ public class CounterAspectTest extends AbstractTestSuite {
     }
 
     @Test
-    public void testCountBooking() {
+    public void testCountAspectBooking() {
         for (int i = 0; i < BOOKING_COUNT; i++) {
             bookingService.bookTicket(user, createTicket(event, dateTime, false));
         }
@@ -69,7 +67,7 @@ public class CounterAspectTest extends AbstractTestSuite {
     }
 
     @Test
-    public void testCountPriceQuery() {
+    public void testCountAspectPriceQuery() {
         for (int i = 0; i < PRICE_QUERY_COUNT; i++) {
             bookingService.getTicketPrice(event, dateTime, 2, user);
         }

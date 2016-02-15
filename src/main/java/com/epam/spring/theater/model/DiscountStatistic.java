@@ -1,18 +1,22 @@
 package com.epam.spring.theater.model;
 
 import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
 public class DiscountStatistic {
-    @NonNull
-    private Integer userId;
+    private static final AtomicInteger count = new AtomicInteger(0);
+    private Integer discountStatisticId;
     private DiscountType discountType;
-    private Integer count;
+    private int appliedCount;
+    private Integer userId;
+
+    public DiscountStatistic(DiscountType discountType, Integer userId) {
+        this.discountStatisticId = count.incrementAndGet();
+        this.discountType = discountType;
+        this.userId = userId;
+    }
 }

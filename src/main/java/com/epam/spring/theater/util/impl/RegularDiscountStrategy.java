@@ -4,6 +4,7 @@ import com.epam.spring.theater.model.Event;
 import com.epam.spring.theater.model.Ticket;
 import com.epam.spring.theater.model.User;
 import com.epam.spring.theater.util.AbstractDiscountStrategy;
+import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Setter
+@EqualsAndHashCode
 public class RegularDiscountStrategy extends AbstractDiscountStrategy {
 
     private BigDecimal regularDiscount;

@@ -5,7 +5,6 @@ import com.epam.spring.theater.model.Event;
 import com.epam.spring.theater.model.EventStatistic;
 import com.epam.spring.theater.model.Ticket;
 import com.epam.spring.theater.model.User;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +21,14 @@ public class CounterAspect {
     private EventStatisticDaoImpl eventStatisticDao;
 
     @AfterReturning("execution(* com.epam.spring.theater.service.EventService.getByName(..)) && args(eventName)")
-    private void countAccessByName(JoinPoint jp, String eventName) {
+    private void countAccessByName(String eventName) {
         Optional<EventStatistic> optionalStatistic = Optional.ofNullable(eventStatisticDao.find(eventName));
         EventStatistic eventStatistic = incrementAccessCount(optionalStatistic.orElse(new EventStatistic(eventName)));
         eventStatisticDao.createOrUpdate(eventName, eventStatistic);
     }
 
     @AfterReturning("execution(* com.epam.spring.theater.service.BookingService.bookTicket(..)) && args(user,ticket)")
-    private void countBooking(JoinPoint jp, User user, Ticket ticket) {
+    private void countBooking(User user, Ticket ticket) {
         Event event = ticket.getEvent();
         Optional<EventStatistic> optionalStatistic = Optional.ofNullable(eventStatisticDao.find(event.getName()));
         EventStatistic eventStatistic = incrementBookingCount(optionalStatistic.orElse(new EventStatistic(event.getName())));
@@ -37,7 +36,7 @@ public class CounterAspect {
     }
 
     @AfterReturning("execution(* com.epam.spring.theater.service.BookingService.getTicketPrice(..)) && args(event, dateTime, seat, user)")
-    private void countPriceQuery(JoinPoint jp, Event event, Date dateTime, Integer seat, User user) {
+    private void countPriceQuery(Event event, Date dateTime, Integer seat, User user) {
         Optional<EventStatistic> optionalStatistic = Optional.ofNullable(eventStatisticDao.find(event.getName()));
         EventStatistic eventStatistic = incrementPriceQuery(optionalStatistic.orElse(new EventStatistic(event.getName())));
         eventStatisticDao.createOrUpdate(event.getName(), eventStatistic);

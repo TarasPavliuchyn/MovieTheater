@@ -1,15 +1,19 @@
 package com.epam.spring.theater.aspect;
 
-import com.epam.spring.theater.dao.impl.DiscountStatisticDaoImpl;
-import com.epam.spring.theater.dao.impl.EventStatisticDaoImpl;
-import com.epam.spring.theater.model.*;
+import com.epam.spring.theater.dao.DiscountStatisticDao;
+import com.epam.spring.theater.model.DiscountStatistic;
+import com.epam.spring.theater.model.DiscountType;
+import com.epam.spring.theater.model.Ticket;
+import com.epam.spring.theater.model.User;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.math.BigDecimal;
+import java.util.Map;
 import java.util.Optional;
 
 @Aspect
@@ -17,19 +21,33 @@ import java.util.Optional;
 public class DiscountAspect {
 
     @Autowired
-    private DiscountStatisticDaoImpl discountStatisticDao;
+    private DiscountStatisticDao discountStatisticDao;
 
-    @AfterReturning("execution(* com.epam.spring.theater.service.DiscountService.getDiscount(..)) && args(user, event, date)")
-    private void countDiscountStatistic(JoinPoint jp, User user, Event event, Date date) {
-        Optional<DiscountStatistic> optionalStatistic = Optional.ofNullable(discountStatisticDao.find(user.getUserId()));
-        DiscountStatistic eventStatistic = incrementDiscountCount(optionalStatistic.orElse(new DiscountStatistic(user.getUserId())));
-        discountStatisticDao.createOrUpdate(user.getUserId(), eventStatistic);
+
+    @Pointcut("within(com.epam.spring.theater.service.impl.DiscountServiceImpl)")
+    private void inDiscountService() {
+    }
+
+    @Pointcut("execution(* *.getDiscount(..))")
+    private void getDiscount() {
+    }
+
+    @AfterReturning(pointcut = "getDiscount() && inDiscountService()", returning = "discount")
+    private void countDiscountStatistic(JoinPoint jp, Object discount) {
+        User user = (User) jp.getArgs()[0];
+        Map<Ticket, Map.Entry<DiscountType, BigDecimal>> disc = (Map<Ticket, Map.Entry<DiscountType, BigDecimal>>) discount;
+        disc.values().stream().forEach(discountEntry -> {
+                    Optional<DiscountStatistic> optionalStatistic = Optional.ofNullable(discountStatisticDao.findByUserIdAndType(user.getUserId(), discountEntry.getKey()));
+                    DiscountStatistic discountStatistic = incrementDiscountCount(optionalStatistic.orElse(new DiscountStatistic(discountEntry.getKey(), user.getUserId())));
+                    discountStatisticDao.createOrUpdate(user.getUserId(), discountStatistic);
+                }
+        );
     }
 
 
-    private DiscountStatistic incrementDiscountCount(DiscountStatistic eventStatistic) {
-        int priceQueryCount = eventStatistic.getPriceQueryCount() + 1;
-        eventStatistic.setPriceQueryCount(priceQueryCount);
-        return eventStatistic;
+    private DiscountStatistic incrementDiscountCount(DiscountStatistic discountStatistic) {
+        int priceQueryCount = discountStatistic.getAppliedCount() + 1;
+        discountStatistic.setAppliedCount(priceQueryCount);
+        return discountStatistic;
     }
 }

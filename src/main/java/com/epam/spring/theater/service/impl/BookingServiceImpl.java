@@ -2,6 +2,7 @@ package com.epam.spring.theater.service.impl;
 
 import com.epam.spring.theater.dao.TicketDao;
 import com.epam.spring.theater.dao.UserDao;
+import com.epam.spring.theater.model.DiscountType;
 import com.epam.spring.theater.model.Event;
 import com.epam.spring.theater.model.Rating;
 import com.epam.spring.theater.model.Ticket;
@@ -65,7 +66,7 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private BigDecimal calculateDiscount(User user, Event event, Date dateTime) {
-        Map<Ticket, BigDecimal> discounts = discountService.getDiscount(user, event, dateTime);
-        return discounts.values().stream().findFirst().orElse(BigDecimal.ZERO);
+        Map<Ticket, Map.Entry<DiscountType, BigDecimal>> discounts = discountService.getDiscount(user, event, dateTime);
+        return discounts.values().stream().findFirst().map(discount -> discount.getValue()).orElse(BigDecimal.ZERO);
     }
 }
