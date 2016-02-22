@@ -27,9 +27,9 @@ import static org.junit.Assert.assertEquals;
 public class DiscountAspectTest extends AbstractTestSuite {
 
     private static final String EVENT_NAME = "The Hateful Eight";
-    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy/hh:mm");
+    private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     private Date dateTime;
-    private static final String EVENT_DATE_TIME = "07/02/2016/20:00";
+    private static final String EVENT_DATE_TIME = "07/02/2016";
     private static final int APPLIED_DISCOUNT_COUNT = 10;
     private Event event;
     private User user;
@@ -52,7 +52,7 @@ public class DiscountAspectTest extends AbstractTestSuite {
         event = eventService.getByName(EVENT_NAME);
         user = new User.UserBuilder("taras_pavlichyn@epam.com", "qwerty")
                 .fullName("Taras Pavliuchyn")
-                .birthDay(getFormatter().parse("18/03/1990/00:00")).role(UserRole.CUSTOMER).build();
+                .birthDay(getFormatter().parse("07/02/1990")).role(UserRole.CUSTOMER).build();
     }
 
     @Test
