@@ -20,32 +20,42 @@ public class CounterAspect {
     @Autowired
     private EventStatisticDaoImpl eventStatisticDao;
 
-    @AfterReturning("execution(* com.epam.spring.theater.service.EventService.getByName(..)) && args(eventName)")
-    private void countAccessByName(String eventName) {
-        Optional<EventStatistic> optionalStatistic = Optional.ofNullable(eventStatisticDao.find(eventName));
-        EventStatistic eventStatistic = incrementAccessCount(optionalStatistic.orElse(new EventStatistic(eventName)));
-        eventStatisticDao.createOrUpdate(eventName, eventStatistic);
+    @AfterReturning(pointcut = "execution(* com.epam.spring.theater.service.EventService.getByName(..))", returning = "event")
+    private void countAccessByName(Event event) {
+        if (event != null) {
+            Optional<EventStatistic> optionalStatistic = Optional.ofNullable(eventStatisticDao.findByEventName(event.getName()));
+            EventStatistic eventStatistic = incrementAccessCount(optionalStatistic.orElse(new EventStatistic(event.getName())));
+            createOrUpdate(eventStatistic);
+        }
     }
 
     @AfterReturning("execution(* com.epam.spring.theater.service.BookingService.bookTicket(..)) && args(user,ticket)")
     private void countBooking(User user, Ticket ticket) {
         Event event = ticket.getEvent();
-        Optional<EventStatistic> optionalStatistic = Optional.ofNullable(eventStatisticDao.find(event.getName()));
+        Optional<EventStatistic> optionalStatistic = Optional.ofNullable(eventStatisticDao.findByEventName(event.getName()));
         EventStatistic eventStatistic = incrementBookingCount(optionalStatistic.orElse(new EventStatistic(event.getName())));
-        eventStatisticDao.createOrUpdate(event.getName(), eventStatistic);
+        createOrUpdate(eventStatistic);
     }
 
     @AfterReturning("execution(* com.epam.spring.theater.service.BookingService.getTicketPrice(..)) && args(event, dateTime, seat, user)")
     private void countPriceQuery(Event event, Date dateTime, Integer seat, User user) {
-        Optional<EventStatistic> optionalStatistic = Optional.ofNullable(eventStatisticDao.find(event.getName()));
+        Optional<EventStatistic> optionalStatistic = Optional.ofNullable(eventStatisticDao.findByEventName(event.getName()));
         EventStatistic eventStatistic = incrementPriceQuery(optionalStatistic.orElse(new EventStatistic(event.getName())));
-        eventStatisticDao.createOrUpdate(event.getName(), eventStatistic);
+        createOrUpdate(eventStatistic);
     }
 
     private EventStatistic incrementAccessCount(EventStatistic eventStatistic) {
         int accessedCount = eventStatistic.getAccessedCount() + 1;
         eventStatistic.setAccessedCount(accessedCount);
         return eventStatistic;
+    }
+
+    private void createOrUpdate(EventStatistic eventStatistic) {
+        if (eventStatistic.getEventStatisticId() == null) {
+            eventStatisticDao.create(eventStatistic);
+        } else {
+            eventStatisticDao.update(eventStatistic);
+        }
     }
 
     private EventStatistic incrementBookingCount(EventStatistic eventStatistic) {

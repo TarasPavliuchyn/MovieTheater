@@ -1,14 +1,13 @@
 package com.epam.spring.theater.model;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class EventStatistic {
+    private Integer eventStatisticId;
     @NonNull
     private String eventName;
     private int accessedCount;

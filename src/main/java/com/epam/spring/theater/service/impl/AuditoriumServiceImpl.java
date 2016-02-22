@@ -29,4 +29,9 @@ public class AuditoriumServiceImpl implements AuditoriumService {
     public List<Integer> getVipSeats(String auditoriumName) {
         return auditoriums.get(auditoriumName).getVipSeats();
     }
+
+    @Override
+    public Auditorium findByName(String auditoriumName) {
+        return auditoriums.get(auditoriumName);
+    }
 }

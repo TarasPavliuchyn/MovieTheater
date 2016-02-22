@@ -2,11 +2,8 @@ package com.epam.spring.theater.service.impl;
 
 import com.epam.spring.theater.dao.TicketDao;
 import com.epam.spring.theater.dao.UserDao;
-import com.epam.spring.theater.model.DiscountType;
-import com.epam.spring.theater.model.Event;
-import com.epam.spring.theater.model.Rating;
-import com.epam.spring.theater.model.Ticket;
-import com.epam.spring.theater.model.User;
+import com.epam.spring.theater.model.*;
+import com.epam.spring.theater.service.AuditoriumService;
 import com.epam.spring.theater.service.BookingService;
 import com.epam.spring.theater.service.DiscountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,13 +33,18 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private AuditoriumService auditoriumService;
+
     @Override
     public BigDecimal getTicketPrice(Event event, Date dateTime, Integer seat, User user) {
         BigDecimal basePrice = event.getBasePrice();
         if (event.getRating() == Rating.HIGH) {
             basePrice = basePrice.multiply(highRatingMoviePrice);
         }
-        if (event.getSchedule().get(dateTime).getVipSeats().contains(seat)) {
+        String auditoriumName = event.getSchedule().get(dateTime);
+        Auditorium auditorium = auditoriumService.findByName(auditoriumName);
+        if (auditorium.getVipSeats().contains(seat)) {
             basePrice = basePrice.multiply(vipSeatsMoviePrice);
         }
         event.setBasePrice(basePrice);

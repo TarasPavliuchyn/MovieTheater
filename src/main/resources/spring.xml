@@ -24,6 +24,7 @@
                 <value>classpath:auditorium/green.properties</value>
                 <value>classpath:auditorium/blue.properties</value>
                 <value>classpath:discount.properties</value>
+                <value>classpath:db.properties</value>
             </list>
         </property>
         <property name="ignoreResourceNotFound" value="true"/>
@@ -35,5 +36,6 @@
 
     <import resource="auditorium.xml"/>
     <import resource="discount.xml"/>
+    <import resource="db.xml"/>
 
 </beans>

@@ -7,6 +7,7 @@ import com.epam.spring.theater.model.Ticket;
 import com.epam.spring.theater.model.User;
 import com.epam.spring.theater.model.UserRole;
 import com.epam.spring.theater.service.BookingService;
+import com.epam.spring.theater.service.EventService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 
 public class LuckyWinnerAspectTest extends AbstractTestSuite {
 
-
+    private static final String EVENT_NAME = "The Hateful Eight";
     private static final BigDecimal PRICE = new BigDecimal("100");
     private Date dateTime;
     private Event event;
@@ -32,10 +33,13 @@ public class LuckyWinnerAspectTest extends AbstractTestSuite {
     @Autowired
     private LuckyWinnerAspect luckyWinnerAspect;
 
+    @Autowired
+    private EventService eventService;
+
     @Before
     public void setUp() throws ParseException {
         dateTime = getFormatter().parse("18/03/2016/20:00");
-        event = createEvent("The Shining", PRICE, Rating.HIGH, getAuditorium("Red"), dateTime);
+        event = eventService.getByName(EVENT_NAME);
         user = new User.UserBuilder("taras_pavlichyn@epam.com", "qwerty")
                 .fullName("Taras Pavliuchyn")
                 .birthDay(getFormatter().parse("18/03/1990/00:00")).role(UserRole.CUSTOMER).build();

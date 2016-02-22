@@ -7,6 +7,7 @@ import com.epam.spring.theater.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -32,22 +33,22 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public List<Event> getAll() {
-        return eventDao.getAll();
+    public Collection<Event> findAll() {
+        return eventDao.findAll();
     }
 
     @Override
-    public List<Event> getForDateRange(Date fromDate, Date toDate) {
+    public Collection<Event> getForDateRange(Date fromDate, Date toDate) {
         return eventDao.getForDateRange(fromDate, toDate);
     }
 
     @Override
-    public List<Event> getNextEvents(Date toDate) {
+    public Collection<Event> getNextEvents(Date toDate) {
         return eventDao.getNextEvents(toDate);
     }
 
     @Override
-    public void assignAuditorium(String eventName, Auditorium auditorium, Date date) {
-        eventDao.assignAuditorium(eventName, auditorium, date);
+    public void assignAuditorium(Event event, Auditorium auditorium, Date date) {
+        eventDao.assignAuditorium(event, auditorium, date);
     }
 }

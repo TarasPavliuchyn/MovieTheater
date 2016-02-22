@@ -2,9 +2,7 @@ package com.epam.spring.theater.dao;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class CrudDaoImpl<E, K> implements CrudDao<E, K> {
 
@@ -17,7 +15,7 @@ public abstract class CrudDaoImpl<E, K> implements CrudDao<E, K> {
         type = (Class) pt.getActualTypeArguments()[0];
     }
 
-    @Override
+
     public E createOrUpdate(K id, E model) {
         return storage.put(id, model);
     }
@@ -33,8 +31,8 @@ public abstract class CrudDaoImpl<E, K> implements CrudDao<E, K> {
     }
 
     @Override
-    public Collection<E> findAll() {
-        return storage.values();
+    public List<E> findAll() {
+        return new ArrayList<>(storage.values());
     }
 
     public Map<K, E> getStorage() {

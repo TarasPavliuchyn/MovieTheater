@@ -25,4 +25,14 @@ public class TicketDaoImpl extends CrudDaoImpl<Ticket, Integer> implements Ticke
     public void createOrUpdate(Ticket ticket) {
         super.createOrUpdate(ticket.getTicketId(), ticket);
     }
+
+    @Override
+    public Ticket create(Ticket model) {
+        return null;
+    }
+
+    @Override
+    public Ticket update(Ticket model) {
+        return null;
+    }
 }

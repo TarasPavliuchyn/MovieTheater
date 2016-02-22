@@ -11,4 +11,6 @@ public interface AuditoriumService {
     Integer getSeatsNumber(String auditoriumName);
 
     List<Integer> getVipSeats(String auditoriumName);
+
+    Auditorium findByName(String auditoriumName);
 }

@@ -4,7 +4,9 @@ import java.util.Collection;
 
 public interface CrudDao<E, K> {
 
-    E createOrUpdate(K key, E model);
+    E create(E model);
+
+    E update(E model);
 
     E find(K id);
 

@@ -27,10 +27,9 @@ import static org.junit.Assert.assertEquals;
 public class DiscountAspectTest extends AbstractTestSuite {
 
     private static final String EVENT_NAME = "The Hateful Eight";
-    private static final String RED = "Red";
     private SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy/hh:mm");
     private Date dateTime;
-    private static final String EVENT_DATE_TIME = "18/03/2016/20:00";
+    private static final String EVENT_DATE_TIME = "07/02/2016/20:00";
     private static final int APPLIED_DISCOUNT_COUNT = 10;
     private Event event;
     private User user;
@@ -50,8 +49,7 @@ public class DiscountAspectTest extends AbstractTestSuite {
     @Before
     public void setUp() throws ParseException {
         dateTime = formatter.parse(EVENT_DATE_TIME);
-        event = createEvent(EVENT_NAME, new BigDecimal("100"), Rating.HIGH, getAuditorium(RED), dateTime);
-        eventService.create(event);
+        event = eventService.getByName(EVENT_NAME);
         user = new User.UserBuilder("taras_pavlichyn@epam.com", "qwerty")
                 .fullName("Taras Pavliuchyn")
                 .birthDay(getFormatter().parse("18/03/1990/00:00")).role(UserRole.CUSTOMER).build();

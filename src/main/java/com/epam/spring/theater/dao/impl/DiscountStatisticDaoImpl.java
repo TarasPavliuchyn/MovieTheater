@@ -16,4 +16,14 @@ public class DiscountStatisticDaoImpl extends CrudDaoImpl<DiscountStatistic, Int
                 .filter(statistic -> statistic.getUserId().equals(userId) && statistic.getDiscountType() == discountType)
                 .findFirst().orElse(null);
     }
+
+    @Override
+    public DiscountStatistic create(DiscountStatistic model) {
+        return null;
+    }
+
+    @Override
+    public DiscountStatistic update(DiscountStatistic model) {
+        return null;
+    }
 }
