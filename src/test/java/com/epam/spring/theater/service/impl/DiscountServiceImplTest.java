@@ -44,7 +44,8 @@ public class DiscountServiceImplTest extends AbstractTestSuite {
                 .birthDay(getFormatter().parse("18/03/1990/00:00")).role(UserRole.CUSTOMER).build();
         Date dateTime = getFormatter().parse("18/03/2016/20:00");
         Event event = createEvent("The Shining", new BigDecimal("100"), Rating.HIGH, getAuditorium("Red"), dateTime);
-        Ticket ticket = createTicket(event, dateTime, true);
+        event.setEventId(1);
+        Ticket ticket = createTicket(event, dateTime, true, false);
         user.setTickets(Arrays.asList(ticket));
 
         Map<Ticket, Map.Entry<DiscountType, BigDecimal>> ticketDiscounts = discountService.getDiscount(user, event, dateTime);
@@ -62,9 +63,10 @@ public class DiscountServiceImplTest extends AbstractTestSuite {
         Date expiredDateTime = getFormatter().parse("17/03/2016/20:00");
         Date dateTime = getFormatter().parse("18/03/2016/20:00");
         Event event = createEvent("The Shining", new BigDecimal("100"), Rating.HIGH, getAuditorium("Red"), dateTime);
+        event.setEventId(1);
         List<Ticket> tickets = new ArrayList<>();
-        IntStream.range(0, viewedMovie).forEach(t -> tickets.add(t, createTicket(event, expiredDateTime, true)));
-        Ticket justBoughtTicket = createTicket(event, dateTime, true);
+        IntStream.range(0, viewedMovie).forEach(t -> tickets.add(t, createTicket(event, expiredDateTime, true, true)));
+        Ticket justBoughtTicket = createTicket(event, dateTime, true, false);
         tickets.add(justBoughtTicket);
         user.setTickets(tickets);
 

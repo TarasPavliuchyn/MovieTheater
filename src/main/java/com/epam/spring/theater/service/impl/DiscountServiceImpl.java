@@ -60,7 +60,7 @@ public class DiscountServiceImpl implements DiscountService {
     private List<Ticket> getActualTickets(User user, Event event, Date date) {
         return user.getTickets()
                 .stream()
-                .filter(ticket -> !ticket.getDateTime().before(date) && ticket.getEvent().equals(event))
+                .filter(ticket -> !ticket.getDateTime().before(date) && ticket.getEventId().equals(event.getEventId()))
                 .collect(Collectors.toList());
     }
 }

@@ -63,14 +63,32 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS schedule (
   schedule_id INT NOT NULL AUTO_INCREMENT ,
-  event_name VARCHAR(20) NULL ,
+  event_id INT NOT NULL ,
   auditorium VARCHAR(20) NULL ,
   event_date DATE NULL ,
   PRIMARY KEY (schedule_id)  ,
   CONSTRAINT schedule_event_id_fk
-    FOREIGN KEY (event_name)
-    REFERENCES event (event_name)
+    FOREIGN KEY (event_id)
+    REFERENCES event (event_id)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
 
+-- -----------------------------------------------------
+-- Table ticket
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS ticket (
+  ticket_id INT NOT NULL AUTO_INCREMENT ,
+  purchased TINYINT(1) NOT NULL ,
+  booked TINYINT(1) NOT NULL ,
+  discounted TINYINT(1) NOT NULL ,
+  event_id INT  NOT NULL ,
+  event_date DATE NULL ,
+  ticket_price DECIMAL(5,2) NULL ,
+  PRIMARY KEY (ticket_id)  ,
+  CONSTRAINT ticket_event_id_fk
+    FOREIGN KEY (event_id)
+    REFERENCES event (event_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;

@@ -51,7 +51,7 @@ public class BookingServiceImplTest extends AbstractTestSuite {
         user = new User.UserBuilder("taras_pavlichyn@epam.com", "qwerty")
                 .fullName("Taras Pavliuchyn")
                 .birthDay(getFormatter().parse("07/02/1990")).role(UserRole.CUSTOMER).build();
-        ticket = createTicket(event, dateTime, false);
+        ticket = createTicket(event, dateTime, false, false);
         user.getTickets().add(ticket);
     }
 
@@ -66,14 +66,15 @@ public class BookingServiceImplTest extends AbstractTestSuite {
 
     @Test
     public void testBookTicket() throws Exception {
-        Ticket ticket = createTicket(event, new Date(), false);
+        Ticket ticket = createTicket(event, new Date(), false, false);
+        ticketDao.create(ticket);
         bookingService.bookTicket(user, ticket);
         assertTrue(ticket.isBooked());
     }
 
     @Test
     public void testGetTicketsForEvent() throws Exception {
-        ticketDao.createOrUpdate(ticket);
+        ticketDao.create(ticket);
         List<Ticket> tickets = bookingService.getTicketsForEvent(event, dateTime);
         assertFalse(tickets.isEmpty());
     }

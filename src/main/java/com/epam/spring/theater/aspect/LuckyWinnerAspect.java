@@ -32,7 +32,7 @@ public class LuckyWinnerAspect {
 
     private void bookWithZeroPrice(User user, Ticket ticket) {
         ticket.setTicketPrice(BigDecimal.ZERO);
-        user.getLuckyTickets().put(ticket.getDateTime(), ticket.getEvent().getName());
+        user.getLuckyTickets().put(ticket.getDateTime(), ticket.getEventId());
     }
 
     private boolean checkLucky() {

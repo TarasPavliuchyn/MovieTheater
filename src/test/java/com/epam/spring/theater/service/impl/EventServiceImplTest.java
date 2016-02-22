@@ -14,7 +14,9 @@ import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 public class EventServiceImplTest extends AbstractTestSuite {
 
@@ -26,9 +28,6 @@ public class EventServiceImplTest extends AbstractTestSuite {
 
     @Autowired
     private EventService eventService;
-
-    @Autowired
-    private AuditoriumServiceImpl auditoriumService;
 
     @Test
     public void testCreate() throws ParseException {

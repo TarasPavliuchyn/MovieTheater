@@ -1,5 +1,6 @@
 package com.epam.spring.theater.aspect;
 
+import com.epam.spring.theater.dao.impl.EventDaoImpl;
 import com.epam.spring.theater.dao.impl.EventStatisticDaoImpl;
 import com.epam.spring.theater.model.Event;
 import com.epam.spring.theater.model.EventStatistic;
@@ -20,6 +21,10 @@ public class CounterAspect {
     @Autowired
     private EventStatisticDaoImpl eventStatisticDao;
 
+    @Autowired
+    private EventDaoImpl eventDao;
+
+
     @AfterReturning(pointcut = "execution(* com.epam.spring.theater.service.EventService.getByName(..))", returning = "event")
     private void countAccessByName(Event event) {
         if (event != null) {
@@ -31,7 +36,7 @@ public class CounterAspect {
 
     @AfterReturning("execution(* com.epam.spring.theater.service.BookingService.bookTicket(..)) && args(user,ticket)")
     private void countBooking(User user, Ticket ticket) {
-        Event event = ticket.getEvent();
+        Event event = eventDao.find(ticket.getEventId());
         Optional<EventStatistic> optionalStatistic = Optional.ofNullable(eventStatisticDao.findByEventName(event.getName()));
         EventStatistic eventStatistic = incrementBookingCount(optionalStatistic.orElse(new EventStatistic(event.getName())));
         createOrUpdate(eventStatistic);

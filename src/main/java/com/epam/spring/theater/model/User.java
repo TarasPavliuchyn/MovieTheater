@@ -21,7 +21,7 @@ public class User {
     private Date birthDay;
     private UserRole role;
     private List<Ticket> tickets = new ArrayList<>();
-    private Map<Date, String> luckyTickets = new HashMap<>();
+    private Map<Date, Integer> luckyTickets = new HashMap<>();
 
     private User(UserBuilder builder) {
         this.userId = count.incrementAndGet();

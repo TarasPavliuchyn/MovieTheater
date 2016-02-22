@@ -59,7 +59,7 @@ public class CounterAspectTest extends AbstractTestSuite {
     public void testCountAspectBooking() {
         Event event = eventService.getByName(EVENT_NAME);
         for (int i = 0; i < BOOKING_COUNT; i++) {
-            bookingService.bookTicket(user, createTicket(event, dateTime, false));
+            bookingService.bookTicket(user, createTicket(event, dateTime, false, false));
         }
         EventStatistic eventStatistic = statisticDao.findByEventName(event.getName());
         assertEquals(BOOKING_COUNT, eventStatistic.getBookedCount());

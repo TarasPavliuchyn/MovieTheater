@@ -32,7 +32,7 @@ public abstract class AbstractDiscountStrategy implements DiscountStrategy {
     protected List<Ticket> getPurchasedTicketsWithoutDiscount(User user, Event event, Integer limit) {
         return user.getTickets()
                 .stream()
-                .filter(ticket -> ticket.isPurchased() && !ticket.isDiscounted() && ticket.getEvent().equals(event))
+                .filter(ticket -> ticket.isPurchased() && !ticket.isDiscounted() && ticket.getEventId().equals(event.getEventId()))
                 .limit(limit)
                 .collect(Collectors.toList());
     }

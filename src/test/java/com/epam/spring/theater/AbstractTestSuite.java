@@ -54,12 +54,14 @@ public abstract class AbstractTestSuite {
                 .findFirst().get();
     }
 
-    protected Ticket createTicket(Event event, Date dateTime, boolean purchased) {
+    protected Ticket createTicket(Event event, Date dateTime, boolean purchased,boolean booked) {
         Ticket ticket = new Ticket();
-        ticket.setBooked(true);
+        ticket.setTicketId(1);
+        ticket.setBooked(booked);
         ticket.setDateTime(dateTime);
-        ticket.setEvent(event);
+        ticket.setEventId(event.getEventId());
         ticket.setPurchased(purchased);
+        ticket.setTicketPrice(BigDecimal.TEN);
         return ticket;
     }
 }

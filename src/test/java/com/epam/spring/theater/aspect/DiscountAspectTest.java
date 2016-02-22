@@ -57,7 +57,7 @@ public class DiscountAspectTest extends AbstractTestSuite {
 
     @Test
     public void testDiscountAspect() {
-        Ticket ticket = createTicket(event, dateTime, true);
+        Ticket ticket = createTicket(event, dateTime, true, false);
         user.setTickets(Arrays.asList(ticket));
         for (int i = 0; i < APPLIED_DISCOUNT_COUNT; i++) {
             discountService.getDiscount(user, event, dateTime);

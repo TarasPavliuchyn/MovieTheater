@@ -55,7 +55,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void bookTicket(User user, Ticket ticket) {
         ticket.setBooked(true);
-        ticketDao.createOrUpdate(ticket);
+        ticketDao.update(ticket);
         if (user.getEmail() != null && !user.getEmail().isEmpty()) {
             user.getTickets().add(ticket);
             userDao.update(user);

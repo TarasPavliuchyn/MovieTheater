@@ -43,7 +43,7 @@ public class LuckyWinnerAspectTest extends AbstractTestSuite {
         user = new User.UserBuilder("taras_pavlichyn@epam.com", "qwerty")
                 .fullName("Taras Pavliuchyn")
                 .birthDay(getFormatter().parse("18/03/1990/00:00")).role(UserRole.CUSTOMER).build();
-        ticket = createTicket(event, dateTime, false);
+        ticket = createTicket(event, dateTime, false, false);
         ticket.setTicketPrice(BigDecimal.TEN);
     }
 

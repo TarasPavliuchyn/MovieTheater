@@ -36,7 +36,7 @@ public class UserServiceImplTest extends AbstractTestSuite {
         user = new User.UserBuilder(USER_EMAIL, "qwerty")
                 .fullName(FULL_NAME)
                 .birthDay(formatter.parse(birthday)).role(UserRole.CUSTOMER).build();
-        Ticket ticket = createTicket(new Event(), new Date(), true);
+        Ticket ticket = createTicket(new Event(), new Date(), true, true);
         user.setTickets(Arrays.asList(ticket));
     }
 
