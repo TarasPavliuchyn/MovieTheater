@@ -22,7 +22,7 @@ import java.util.HashMap;
 @Ignore
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring.xml")
-@DirtiesContext(classMode= DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Getter
 public abstract class AbstractTestSuite {
 
@@ -54,14 +54,15 @@ public abstract class AbstractTestSuite {
                 .findFirst().get();
     }
 
-    protected Ticket createTicket(Event event, Date dateTime, boolean purchased,boolean booked) {
+    protected Ticket createTicket(Integer ticketId, Integer userId, boolean booked, Date dateTime, Integer eventId, boolean purchased) {
         Ticket ticket = new Ticket();
-        ticket.setTicketId(1);
+        ticket.setTicketId(ticketId);
         ticket.setBooked(booked);
         ticket.setDateTime(dateTime);
-        ticket.setEventId(event.getEventId());
+        ticket.setEventId(eventId);
         ticket.setPurchased(purchased);
         ticket.setTicketPrice(BigDecimal.TEN);
+        ticket.setUserId(userId);
         return ticket;
     }
 }

@@ -1,12 +1,12 @@
 package com.epam.spring.theater.service.impl;
 
+import com.epam.spring.theater.dao.TicketDao;
 import com.epam.spring.theater.dao.UserDao;
 import com.epam.spring.theater.model.Ticket;
 import com.epam.spring.theater.model.User;
 import com.epam.spring.theater.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -16,10 +16,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private TicketDao ticketDao;
+
     @Override
     public void register(User user) {
-        Assert.notNull(user.getEmail(), "Email can't be blank");
-        Assert.notNull(user.getPassword(), "Password can't be blank");
         userDao.create(user);
     }
 
@@ -30,8 +31,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getById(Integer userId) {
-        return userDao.getById(userId);
+        return userDao.find(userId);
     }
+
 
     @Override
     public User getUserByEmail(String email) {
@@ -45,6 +47,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<Ticket> getBookedTickets(Integer userId) {
-        return userDao.getBookedTickets(userId);
+        return ticketDao.getBookedTickets(userId);
     }
 }

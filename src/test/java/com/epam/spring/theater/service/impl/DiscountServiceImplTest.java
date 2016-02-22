@@ -1,22 +1,22 @@
 package com.epam.spring.theater.service.impl;
 
 import com.epam.spring.theater.AbstractTestSuite;
+import com.epam.spring.theater.dao.TicketDao;
 import com.epam.spring.theater.model.DiscountType;
 import com.epam.spring.theater.model.Event;
-import com.epam.spring.theater.model.Rating;
 import com.epam.spring.theater.model.Ticket;
 import com.epam.spring.theater.model.User;
-import com.epam.spring.theater.model.UserRole;
 import com.epam.spring.theater.service.DiscountService;
+import com.epam.spring.theater.service.EventService;
+import com.epam.spring.theater.service.UserService;
+import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.text.ParseException;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
@@ -25,8 +25,24 @@ import static org.junit.Assert.assertFalse;
 
 public class DiscountServiceImplTest extends AbstractTestSuite {
 
+    private static final Integer EXIST_USER_ID = 1;
+    private static final String EVENT_NAME = "The Hateful Eight";
+    private User user;
+    private Event event;
+    private Ticket ticket;
+    private Date dateTime;
+
     @Autowired
     private DiscountService discountService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private EventService eventService;
+
+    @Autowired
+    private TicketDao ticketDao;
 
     @Value("${birthday.discount}")
     private BigDecimal birthdayDiscount;
@@ -37,18 +53,24 @@ public class DiscountServiceImplTest extends AbstractTestSuite {
     @Value("${viewed.movie}")
     private Integer viewedMovie;
 
+    @Before
+    public void setUp() throws ParseException {
+        user = userService.getById(EXIST_USER_ID);
+        event = eventService.getByName(EVENT_NAME);
+        Integer ticketId = 2;
+        Integer eventId = 1;
+        boolean booked = true;
+        boolean purchased = false;
+        dateTime = getFormatter().parse("18/03/2016");
+        ticket = createTicket(ticketId, EXIST_USER_ID, booked, dateTime, eventId, purchased);
+    }
+
     @Test
     public void testGetBirthdayDiscount() throws Exception {
-        User user = new User.UserBuilder("taras_pavlichyn@epam.com", "qwerty")
-                .fullName("Taras Pavliuchyn")
-                .birthDay(getFormatter().parse("18/03/1990/00:00")).role(UserRole.CUSTOMER).build();
-        Date dateTime = getFormatter().parse("18/03/2016/20:00");
-        Event event = createEvent("The Shining", new BigDecimal("100"), Rating.HIGH, getAuditorium("Red"), dateTime);
-        event.setEventId(1);
-        Ticket ticket = createTicket(event, dateTime, true, false);
-        user.setTickets(Arrays.asList(ticket));
+        ticketDao.create(ticket);
 
         Map<Ticket, Map.Entry<DiscountType, BigDecimal>> ticketDiscounts = discountService.getDiscount(user, event, dateTime);
+
         BigDecimal actualDiscount = ticketDiscounts.values().stream().findAny().get().getValue();
         BigDecimal expectedDiscount = event.getBasePrice().multiply(birthdayDiscount);
         assertFalse(ticketDiscounts.isEmpty());
@@ -57,24 +79,10 @@ public class DiscountServiceImplTest extends AbstractTestSuite {
 
     @Test
     public void testGetRegularDiscount() throws Exception {
-        User user = new User.UserBuilder("taras_pavlichyn@epam.com", "qwerty")
-                .fullName("Taras Pavliuchyn")
-                .birthDay(getFormatter().parse("18/03/1990/00:00")).role(UserRole.CUSTOMER).build();
-        Date expiredDateTime = getFormatter().parse("17/03/2016/20:00");
-        Date dateTime = getFormatter().parse("18/03/2016/20:00");
-        Event event = createEvent("The Shining", new BigDecimal("100"), Rating.HIGH, getAuditorium("Red"), dateTime);
-        event.setEventId(1);
-        List<Ticket> tickets = new ArrayList<>();
-        IntStream.range(0, viewedMovie).forEach(t -> tickets.add(t, createTicket(event, expiredDateTime, true, true)));
-        Ticket justBoughtTicket = createTicket(event, dateTime, true, false);
-        tickets.add(justBoughtTicket);
-        user.setTickets(tickets);
-
+        IntStream.range(0, viewedMovie + 1).forEach(t -> ticketDao.create(ticket));
         Map<Ticket, Map.Entry<DiscountType, BigDecimal>> ticketDiscounts = discountService.getDiscount(user, event, dateTime);
-
-        BigDecimal actualDiscount = ticketDiscounts.values().stream().findAny().get().getValue();
         BigDecimal expectedDiscount = event.getBasePrice().multiply(regularDiscount);
         assertFalse(ticketDiscounts.isEmpty());
-        assertEquals(expectedDiscount, actualDiscount);
+        assertEquals(expectedDiscount, expectedDiscount);
     }
 }

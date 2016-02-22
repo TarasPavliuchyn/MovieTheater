@@ -1,6 +1,7 @@
 package com.epam.spring.theater.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -12,19 +13,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class User {
-    private static final AtomicInteger count = new AtomicInteger(0);
     private Integer userId;
     private String email;
     private String password;
     private String fullName;
     private Date birthDay;
     private UserRole role;
-    private List<Ticket> tickets = new ArrayList<>();
     private Map<Date, Integer> luckyTickets = new HashMap<>();
 
     private User(UserBuilder builder) {
-        this.userId = count.incrementAndGet();
         this.email = builder.email;
         this.password = builder.password;
         this.fullName = builder.fullName;

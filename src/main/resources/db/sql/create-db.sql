@@ -13,22 +13,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table discount_statistic
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS discount_statistic (
-  discount_type VARCHAR(20) NOT NULL ,
-  applied_count INT NOT NULL ,
-  user_id INT NOT NULL ,
-  PRIMARY KEY (discount_type, user_id)  ,
-  CONSTRAINT user_id_fk
-    FOREIGN KEY (user_id)
-    REFERENCES user (user_id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table event
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS event (
@@ -85,6 +69,7 @@ CREATE TABLE IF NOT EXISTS ticket (
   event_id INT  NOT NULL ,
   event_date DATE NULL ,
   ticket_price DECIMAL(5,2) NULL ,
+  user_id INT NULL,
   PRIMARY KEY (ticket_id)  ,
   CONSTRAINT ticket_event_id_fk
     FOREIGN KEY (event_id)
@@ -92,3 +77,33 @@ CREATE TABLE IF NOT EXISTS ticket (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table user
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS user (
+  user_id INT NOT NULL AUTO_INCREMENT ,
+  email VARCHAR(20) NOT NULL ,
+  password VARCHAR(20)  NULL ,
+  full_name VARCHAR(20)  NULL ,
+  birthday DATE NULL ,
+  user_role VARCHAR(20)  NULL ,
+  PRIMARY KEY (email))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table discount_statistic
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS discount_statistic (
+  discount_statistic_id INT NOT NULL AUTO_INCREMENT ,
+  discount_type VARCHAR(20) NOT NULL ,
+  applied_count INT  NULL ,
+  user_id INT  NULL ,
+  PRIMARY KEY (discount_statistic_id),
+  CONSTRAINT discount_statistic_id_fk
+      FOREIGN KEY (user_id)
+      REFERENCES user (user_id)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE)
+ENGINE = InnoDB;
+

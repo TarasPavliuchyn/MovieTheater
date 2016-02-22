@@ -58,14 +58,14 @@ public class EventServiceImplTest extends AbstractTestSuite {
     @Test
     public void testGetForDateRange() throws ParseException {
         String eventDateTimeFrom = "07/02/2016/16:00";
-        String eventDateTimeTo = "07/02/2016/22:00";
+        String eventDateTimeTo = "07/02/2017/22:00";
         Collection<Event> events = eventService.getForDateRange(formatter.parse(eventDateTimeFrom), formatter.parse(eventDateTimeTo));
         assertFalse(events.isEmpty());
     }
 
     @Test
     public void testGetNextEvents() throws ParseException {
-        String eventDateTimeTo = "07/02/2016/22:00";
+        String eventDateTimeTo = "07/04/2016/22:00";
         Collection<Event> events = eventService.getNextEvents(formatter.parse(eventDateTimeTo));
         assertFalse(events.isEmpty());
     }

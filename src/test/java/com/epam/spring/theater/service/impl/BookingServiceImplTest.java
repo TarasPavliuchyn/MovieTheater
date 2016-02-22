@@ -2,9 +2,12 @@ package com.epam.spring.theater.service.impl;
 
 import com.epam.spring.theater.AbstractTestSuite;
 import com.epam.spring.theater.dao.TicketDao;
-import com.epam.spring.theater.model.*;
+import com.epam.spring.theater.model.Event;
+import com.epam.spring.theater.model.Ticket;
+import com.epam.spring.theater.model.User;
 import com.epam.spring.theater.service.BookingService;
 import com.epam.spring.theater.service.EventService;
+import com.epam.spring.theater.service.UserService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +18,16 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class BookingServiceImplTest extends AbstractTestSuite {
 
     private static final BigDecimal PRICE = new BigDecimal("100");
     private static final String EVENT_NAME = "The Hateful Eight";
+    private static final Integer EXIST_USER_ID = 1;
     private Date dateTime;
     private Event event;
     private User user;
@@ -44,15 +51,20 @@ public class BookingServiceImplTest extends AbstractTestSuite {
     @Autowired
     private TicketDao ticketDao;
 
+    @Autowired
+    private UserService userService;
+
     @Before
     public void setUp() throws ParseException {
-        dateTime = getFormatter().parse("07/02/2016");
+        dateTime = getFormatter().parse("18/03/2016");
         event = eventService.getByName(EVENT_NAME);
-        user = new User.UserBuilder("taras_pavlichyn@epam.com", "qwerty")
-                .fullName("Taras Pavliuchyn")
-                .birthDay(getFormatter().parse("07/02/1990")).role(UserRole.CUSTOMER).build();
-        ticket = createTicket(event, dateTime, false, false);
-        user.getTickets().add(ticket);
+        user = userService.getById(EXIST_USER_ID);
+        Integer ticketId = 1;
+        Integer eventId = 1;
+        boolean booked = true;
+        boolean purchased = false;
+        ticket = createTicket(ticketId, EXIST_USER_ID, booked, dateTime, eventId, purchased);
+        ticketDao.create(ticket);
     }
 
     @Test
@@ -66,15 +78,12 @@ public class BookingServiceImplTest extends AbstractTestSuite {
 
     @Test
     public void testBookTicket() throws Exception {
-        Ticket ticket = createTicket(event, new Date(), false, false);
-        ticketDao.create(ticket);
         bookingService.bookTicket(user, ticket);
         assertTrue(ticket.isBooked());
     }
 
     @Test
     public void testGetTicketsForEvent() throws Exception {
-        ticketDao.create(ticket);
         List<Ticket> tickets = bookingService.getTicketsForEvent(event, dateTime);
         assertFalse(tickets.isEmpty());
     }

@@ -39,15 +39,22 @@ public class DiscountAspect {
         disc.values().stream().forEach(discountEntry -> {
                     Optional<DiscountStatistic> optionalStatistic = Optional.ofNullable(discountStatisticDao.findByUserIdAndType(user.getUserId(), discountEntry.getKey()));
                     DiscountStatistic discountStatistic = incrementDiscountCount(optionalStatistic.orElse(new DiscountStatistic(discountEntry.getKey(), user.getUserId())));
-                    discountStatisticDao.createOrUpdate(user.getUserId(), discountStatistic);
+                    createOrUpdate(discountStatistic);
                 }
         );
     }
-
 
     private DiscountStatistic incrementDiscountCount(DiscountStatistic discountStatistic) {
         int priceQueryCount = discountStatistic.getAppliedCount() + 1;
         discountStatistic.setAppliedCount(priceQueryCount);
         return discountStatistic;
+    }
+
+    private void createOrUpdate(DiscountStatistic discountStatistic) {
+        if (discountStatistic.getDiscountStatisticId() == null) {
+            discountStatisticDao.create(discountStatistic);
+        } else {
+            discountStatisticDao.update(discountStatistic);
+        }
     }
 }

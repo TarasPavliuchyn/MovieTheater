@@ -1,6 +1,7 @@
 package com.epam.spring.theater.aspect;
 
 import com.epam.spring.theater.dao.DiscountStatisticDao;
+import com.epam.spring.theater.dao.UserDao;
 import com.epam.spring.theater.model.Ticket;
 import com.epam.spring.theater.model.User;
 import lombok.Setter;
@@ -19,6 +20,9 @@ public class LuckyWinnerAspect {
     @Autowired
     private DiscountStatisticDao discountStatisticDao;
 
+    @Autowired
+    private UserDao userDao;
+
     @Setter
     private double chanceToWin;
 
@@ -33,6 +37,7 @@ public class LuckyWinnerAspect {
     private void bookWithZeroPrice(User user, Ticket ticket) {
         ticket.setTicketPrice(BigDecimal.ZERO);
         user.getLuckyTickets().put(ticket.getDateTime(), ticket.getEventId());
+        userDao.update(user);
     }
 
     private boolean checkLucky() {

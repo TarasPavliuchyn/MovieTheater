@@ -1,5 +1,6 @@
 package com.epam.spring.theater.service.impl;
 
+import com.epam.spring.theater.dao.TicketDao;
 import com.epam.spring.theater.model.DiscountType;
 import com.epam.spring.theater.model.Event;
 import com.epam.spring.theater.model.Ticket;
@@ -22,6 +23,10 @@ public class DiscountServiceImpl implements DiscountService {
 
     @Autowired
     private List<DiscountStrategy> discountStrategies;
+
+    @Autowired
+    private TicketDao ticketDao;
+
     private Comparator<? super Map.Entry<DiscountType, BigDecimal>> maxDiscountComparator = (
             disc1, disk2) -> disc1.getValue().compareTo(
             disk2.getValue());
@@ -58,7 +63,7 @@ public class DiscountServiceImpl implements DiscountService {
     }
 
     private List<Ticket> getActualTickets(User user, Event event, Date date) {
-        return user.getTickets()
+        return ticketDao.getBookedTickets(user.getUserId())
                 .stream()
                 .filter(ticket -> !ticket.getDateTime().before(date) && ticket.getEventId().equals(event.getEventId()))
                 .collect(Collectors.toList());

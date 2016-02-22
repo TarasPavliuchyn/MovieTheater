@@ -6,32 +6,22 @@ import com.epam.spring.theater.model.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class TicketDaoImpl implements TicketDao {
 
-    private static final String INSERT_QUERY = "INSERT INTO ticket (booked, discounted, purchased, ticket_price, event_date, event_id) VALUES (?,?,?,?,?,?)";
-    private static final String UPDATE_QUERY = "UPDATE ticket SET booked=?, discounted=?, purchased=?, ticket_price=?, event_date=?, event_id=? WHERE ticket_id=?";
-    private static final String SELECT_BY_NAME = "SELECT * FROM event LEFT JOIN schedule ON event.event_id = schedule.event_id WHERE event.event_name=? ";
-    private static final String SELECT_BY_ID = "SELECT * FROM event WHERE event_id=?";
+    private static final String INSERT_QUERY = "INSERT INTO ticket (booked, discounted, purchased, ticket_price, event_date, event_id, user_id) VALUES (?,?,?,?,?,?,?)";
+    private static final String UPDATE_QUERY = "UPDATE ticket SET booked=?, discounted=?, purchased=?, ticket_price=?, event_date=?, event_id=?, user_id=? WHERE ticket_id=?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM ticket LEFT JOIN event ON event.event_id = ticket.event_id";
     private static final String SELECT_ALL_PURCHASED_QUERY = "SELECT * FROM ticket LEFT JOIN event ON event.event_id = ticket.event_id WHERE ticket.event_id=? AND ticket.event_date= ?";
-    private static final String DELETE_QUERY = "DELETE FROM event WHERE event_name=?";
-    private static final String SELECT_DATE_RANGE = "SELECT * FROM event LEFT JOIN schedule ON event.event_id = schedule.event_id " +
-            "WHERE schedule.event_date BETWEEN ? AND ?";
-    private static final String SELECT_TO_DATE = "SELECT * FROM event LEFT JOIN schedule ON event.event_id = schedule.event_id " +
-            "WHERE schedule.event_date <= ?";
+    private static final String SELECT_BOOKED_TICKETS = "SELECT * FROM ticket LEFT JOIN event ON event.event_id = ticket.event_id WHERE ticket.user_id=?";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -45,21 +35,21 @@ public class TicketDaoImpl implements TicketDao {
 
     @Override
     public Ticket create(Ticket ticket) {
-        Object[] params = {ticket.isBooked(), ticket.isDiscounted(), ticket.isPurchased(), ticket.getTicketPrice(), ticket.getDateTime(), ticket.getEventId()};
+        Object[] params = {ticket.isBooked(), ticket.isDiscounted(), ticket.isPurchased(), ticket.getTicketPrice(), ticket.getDateTime(), ticket.getEventId(), ticket.getUserId()};
         jdbcTemplate.update(INSERT_QUERY, params);
         return ticket;
     }
 
     @Override
     public Ticket update(Ticket ticket) {
-        Object[] params = { ticket.isBooked(), ticket.isDiscounted(), ticket.isPurchased(), ticket.getTicketPrice(), new java.sql.Date(ticket.getDateTime().getTime()), ticket.getEventId(), ticket.getEventId()};
+        Object[] params = {ticket.isBooked(), ticket.isDiscounted(), ticket.isPurchased(), ticket.getTicketPrice(), new java.sql.Date(ticket.getDateTime().getTime()), ticket.getEventId(), ticket.getEventId(), ticket.getUserId()};
         jdbcTemplate.update(UPDATE_QUERY, params);
         return ticket;
     }
 
     @Override
     public Ticket find(Integer id) {
-        return null;
+        throw new UnsupportedOperationException("not supported");
     }
 
     @Override
@@ -69,8 +59,13 @@ public class TicketDaoImpl implements TicketDao {
     }
 
     @Override
-    public void remove(Ticket model) {
+    public List<Ticket> getBookedTickets(Integer userId) {
+        return jdbcTemplate.query(SELECT_BOOKED_TICKETS, new Object[]{userId}, new TicketRowMapper());
+    }
 
+    @Override
+    public void remove(Ticket model) {
+        throw new UnsupportedOperationException("not supported");
     }
 
     static class TicketRowMapper implements RowMapper<Ticket> {
@@ -84,6 +79,7 @@ public class TicketDaoImpl implements TicketDao {
             ticket.setTicketPrice(resultSet.getBigDecimal("ticket_price"));
             ticket.setDateTime(resultSet.getDate("event_date"));
             ticket.setEventId(resultSet.getInt("event_id"));
+            ticket.setUserId(resultSet.getInt("user_id"));
             return ticket;
         }
     }

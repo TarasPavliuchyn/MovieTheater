@@ -2,7 +2,12 @@ package com.epam.spring.theater.service.impl;
 
 import com.epam.spring.theater.dao.TicketDao;
 import com.epam.spring.theater.dao.UserDao;
-import com.epam.spring.theater.model.*;
+import com.epam.spring.theater.model.Auditorium;
+import com.epam.spring.theater.model.DiscountType;
+import com.epam.spring.theater.model.Event;
+import com.epam.spring.theater.model.Rating;
+import com.epam.spring.theater.model.Ticket;
+import com.epam.spring.theater.model.User;
 import com.epam.spring.theater.service.AuditoriumService;
 import com.epam.spring.theater.service.BookingService;
 import com.epam.spring.theater.service.DiscountService;
@@ -56,10 +61,6 @@ public class BookingServiceImpl implements BookingService {
     public void bookTicket(User user, Ticket ticket) {
         ticket.setBooked(true);
         ticketDao.update(ticket);
-        if (user.getEmail() != null && !user.getEmail().isEmpty()) {
-            user.getTickets().add(ticket);
-            userDao.update(user);
-        }
     }
 
     @Override
