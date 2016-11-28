@@ -1,37 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/context
  		http://www.springframework.org/schema/context/spring-context-3.2.xsd
  		http://www.springframework.org/schema/beans
  		http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
- 		http://www.springframework.org/schema/util
- 		http://www.springframework.org/schema/util/spring-util-3.2.xsd
+
+
  		http://www.springframework.org/schema/aop
- 		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+ 		http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <aop:aspectj-autoproxy/>
     <context:annotation-config/>
     <context:component-scan base-package="com.epam.spring.theater"/>
+    <mvc:annotation-driven/>
+    <mvc:resources mapping="/static/**" location="/pages/"/>
+    <!--<mvc:view-controller path="/" view-name="homePage"/>-->
+
+
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
-                <value>classpath:auditorium/red.properties</value>
-                <value>classpath:auditorium/green.properties</value>
-                <value>classpath:auditorium/blue.properties</value>
-                <value>classpath:discount.properties</value>
-                <value>classpath:db.properties</value>
+                <value>/WEB-INF/auditorium/red.properties</value>
+                <value>/WEB-INF/auditorium/green.properties</value>
+                <value>/WEB-INF/auditorium/blue.properties</value>
+                <value>/WEB-INF/discount.properties</value>
             </list>
         </property>
         <property name="ignoreResourceNotFound" value="true"/>
-        <property name="systemPropertiesMode">
-            <util:constant
-                    static-field="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer.SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
-        </property>
     </bean>
 
     <import resource="auditorium.xml"/>

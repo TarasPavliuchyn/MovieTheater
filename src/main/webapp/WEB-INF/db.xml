@@ -12,8 +12,8 @@
     </bean>
 
     <jdbc:embedded-database id="embeddedDB" type="H2">
-        <jdbc:script location="classpath:db/sql/create-db.sql"/>
-        <jdbc:script location="classpath:db/sql/insert-data.sql"/>
+        <jdbc:script location="/WEB-INF/db/sql/create-db.sql"/>
+        <jdbc:script location="/WEB-INF/db/sql/insert-data.sql"/>
     </jdbc:embedded-database>
 
 </beans>
