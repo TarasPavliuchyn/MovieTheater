@@ -35,14 +35,14 @@
                 <value>/WEB-INF/auditorium/red.properties</value>
                 <value>/WEB-INF/auditorium/green.properties</value>
                 <value>/WEB-INF/auditorium/blue.properties</value>
-                <value>/WEB-INF/discount.properties</value>
+                <value>/WEB-INF/discount/discount.properties</value>
             </list>
         </property>
         <property name="ignoreResourceNotFound" value="true"/>
     </bean>
 
-    <import resource="auditorium.xml"/>
-    <import resource="discount.xml"/>
-    <import resource="db.xml"/>
+    <import resource="auditorium-config.xml"/>
+    <import resource="discount-config.xml"/>
+    <import resource="db-config.xml"/>
 
 </beans>
