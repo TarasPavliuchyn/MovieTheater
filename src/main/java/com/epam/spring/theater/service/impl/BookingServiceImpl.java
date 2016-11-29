@@ -1,5 +1,6 @@
 package com.epam.spring.theater.service.impl;
 
+import com.epam.spring.theater.dao.EventDao;
 import com.epam.spring.theater.dao.TicketDao;
 import com.epam.spring.theater.dao.UserDao;
 import com.epam.spring.theater.model.Auditorium;
@@ -39,22 +40,26 @@ public class BookingServiceImpl implements BookingService {
     private UserDao userDao;
 
     @Autowired
+    private EventDao eventDao;
+
+    @Autowired
     private AuditoriumService auditoriumService;
 
     @Override
-    public BigDecimal getTicketPrice(Event event, Date dateTime, Integer seat, User user) {
-        BigDecimal basePrice = event.getBasePrice();
-        if (event.getRating() == Rating.HIGH) {
-            basePrice = basePrice.multiply(highRatingMoviePrice);
+    public BigDecimal getTicketPrice(String eventName, Date dateTime, Integer seat, Integer userId) {
+        BigDecimal basePrice = null;
+        Event event = eventDao.getByName(eventName);
+        User user = userDao.find(userId);
+        if (event != null) {
+            basePrice = event.getBasePrice();
+            if (event.getRating() == Rating.HIGH) {
+                basePrice = basePrice.multiply(highRatingMoviePrice);
+            }
+            basePrice = upPriceForVIPSeat(dateTime, seat, basePrice, event);
+            BigDecimal calculatedDiscount = calculateDiscount(user, event, dateTime);
+            basePrice = basePrice.subtract(calculatedDiscount);
         }
-        String auditoriumName = event.getSchedule().get(dateTime);
-        Auditorium auditorium = auditoriumService.findByName(auditoriumName);
-        if (auditorium.getVipSeats().contains(seat)) {
-            basePrice = basePrice.multiply(vipSeatsMoviePrice);
-        }
-        event.setBasePrice(basePrice);
-        BigDecimal calculatedDiscount = calculateDiscount(user, event, dateTime);
-        return basePrice.subtract(calculatedDiscount);
+        return basePrice;
     }
 
     @Override
@@ -66,6 +71,15 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public List<Ticket> getTicketsForEvent(Event event, Date date) {
         return ticketDao.getPurchasedTickets(event, date);
+    }
+
+    private BigDecimal upPriceForVIPSeat(Date dateTime, Integer seat, BigDecimal basePrice, Event event) {
+        String auditoriumName = event.getSchedule().get(dateTime);
+        Auditorium auditorium = auditoriumService.findByName(auditoriumName);
+        if (auditorium.getVipSeats().contains(seat)) {
+            basePrice = basePrice.multiply(vipSeatsMoviePrice);
+        }
+        return basePrice;
     }
 
     private BigDecimal calculateDiscount(User user, Event event, Date dateTime) {

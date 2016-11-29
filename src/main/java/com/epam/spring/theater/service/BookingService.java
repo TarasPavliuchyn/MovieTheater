@@ -5,13 +5,12 @@ import com.epam.spring.theater.model.Ticket;
 import com.epam.spring.theater.model.User;
 
 import java.math.BigDecimal;
-import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
 public interface BookingService {
 
-    BigDecimal getTicketPrice(Event event, Date dateTime, Integer seat, User user);
+    BigDecimal getTicketPrice(String eventName, Date dateTime, Integer seat, Integer userId);
 
     void bookTicket(User user, Ticket ticket);
 
