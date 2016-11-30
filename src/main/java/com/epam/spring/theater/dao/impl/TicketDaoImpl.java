@@ -20,15 +20,15 @@ public class TicketDaoImpl implements TicketDao {
     private static final String INSERT_QUERY = "INSERT INTO ticket (booked, discounted, purchased, ticket_price, event_date, event_id, user_id) VALUES (?,?,?,?,?,?,?)";
     private static final String UPDATE_QUERY = "UPDATE ticket SET booked=?, discounted=?, purchased=?, ticket_price=?, event_date=?, event_id=?, user_id=? WHERE ticket_id=?";
     private static final String SELECT_ALL_QUERY = "SELECT * FROM ticket LEFT JOIN event ON event.event_id = ticket.event_id";
-    private static final String SELECT_ALL_PURCHASED_QUERY = "SELECT * FROM ticket LEFT JOIN event ON event.event_id = ticket.event_id WHERE ticket.event_id=? AND ticket.event_date= ?";
+    private static final String SELECT_ALL_PURCHASED_QUERY = "SELECT * FROM ticket LEFT JOIN event ON event.event_id = ticket.event_id WHERE event.event_name=? AND ticket.event_date= ?";
     private static final String SELECT_BOOKED_TICKETS = "SELECT * FROM ticket LEFT JOIN event ON event.event_id = ticket.event_id WHERE ticket.user_id=?";
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Ticket> getPurchasedTickets(Event event, Date date) {
-        Object[] params = {event.getEventId(), date};
+    public List<Ticket> getPurchasedTickets(String eventName, Date date) {
+        Object[] params = {eventName, date};
         List<Ticket> tickets = jdbcTemplate.query(SELECT_ALL_PURCHASED_QUERY, params, new TicketRowMapper());
         return tickets;
     }

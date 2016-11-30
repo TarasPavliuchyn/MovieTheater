@@ -69,8 +69,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public List<Ticket> getTicketsForEvent(Event event, Date date) {
-        return ticketDao.getPurchasedTickets(event, date);
+    public List<Ticket> getTicketsForEvent(String eventName, Date date) {
+        return ticketDao.getPurchasedTickets(eventName, date);
     }
 
     private BigDecimal upPriceForVIPSeat(Date dateTime, Integer seat, BigDecimal basePrice, Event event) {

@@ -44,14 +44,15 @@ public class BookingController {
         return "redirect:booking";
     }
 
-    @RequestMapping(value = "/ticket", method = RequestMethod.GET)
+    @RequestMapping(value = "/tickets", method = RequestMethod.GET)
     public String retrieveTicketsForEvent(@RequestParam("eventName") String eventName,
-                                          @DateTimeFormat(pattern = "yyyy-MM-dd") Date eventDate) {
-
+                                          @DateTimeFormat(pattern = "yyyy-MM-dd") Date eventDate,
+                                          Model model) {
         List<TicketDto> tickets = bookingFacade.getTicketsForEvent(eventName, eventDate);
-        ModelAndView mav = new ModelAndView("booking");
-        mav.addObject("tickets", tickets);
-        return "redirect:booking";
+        model.addAttribute("tickets", tickets);
+        model.addAttribute("eventName", eventName);
+        model.addAttribute("eventDate", eventDate);
+        return "booking";
     }
 
 }

@@ -3,6 +3,7 @@ package com.epam.spring.theater.facade.impl;
 import com.epam.spring.theater.converter.impl.TicketConverter;
 import com.epam.spring.theater.dto.TicketDto;
 import com.epam.spring.theater.facade.BookingFacade;
+import com.epam.spring.theater.model.Ticket;
 import com.epam.spring.theater.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ public class BookingFacadeImpl implements BookingFacade {
 
     @Override
     public List<TicketDto> getTicketsForEvent(String eventName, Date date) {
-        return null;
+        List<Ticket> tickets = bookingService.getTicketsForEvent(eventName, date);
+        return ticketConverter.toDtoList(tickets);
     }
 }

@@ -1,6 +1,5 @@
 package com.epam.spring.theater.service;
 
-import com.epam.spring.theater.model.Event;
 import com.epam.spring.theater.model.Ticket;
 import com.epam.spring.theater.model.User;
 
@@ -14,5 +13,5 @@ public interface BookingService {
 
     void bookTicket(User user, Ticket ticket);
 
-    List<Ticket> getTicketsForEvent(Event event, Date date);
+    List<Ticket> getTicketsForEvent(String event, Date date);
 }
