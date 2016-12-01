@@ -14,14 +14,14 @@
             <input type="submit" value="Search" />
         </form>
     </div>
-    <center><p3  align="center">Search results for event '${eventName}' and date '${eventDate?date}'<p3></center>
+    <center><p3  align="center">Search results for event "${eventName}" and date '${(eventDate!.now)?date}'<p3></center>
     <table border="1" align="center" style="width:50%">
         <thead>
             <tr>
                 <th>Ticket #</th>
                 <th>Event Name</th>
                 <th>Seat</th>
-                <th>Base Price</th>
+                <th>Ticket Price</th>
                 <th>Discounted</th>
                 <th>Purchased</th>
                 <th>Booked</th>
@@ -41,6 +41,8 @@
             </#list>
         </tbody>
     </table>
+    <br><br>
+    <center><p3  align="center"><b>Available films are 'The Hateful Eight', 'Finding Dory' and 'Doom' for date '2016-03-18' (DEMO)!!!<b><p3></center><br/>
     </div>
 </body>
 </html>

@@ -29,6 +29,8 @@
             <br>
         </form>
     </div>
+    <br><br>
+    <center><p3  align="center"><b>Please use 'Taras_Pavliuchyn@epam.com' or 'Anton_Yaskou@epam.com' for demo!!!<b><p3></center><br/>
 <#else>
     <center><p3  align="center">Ticket was successfully booked '${ticket.eventName}'|seat:${ticket.seat}|price:${ticket.ticketPrice}hrn by user with email ${userEmail}<p3></center><br/>
 </#if>
