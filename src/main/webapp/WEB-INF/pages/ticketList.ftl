@@ -10,7 +10,7 @@
           	Event Name<br>
           	<input type="text" name="eventName" placeholder="e.g. Doom"/> <br/>
             Event Date<br>
-            <input type="text" name="eventDate" placeholder="e.g. 1990-03-18" title="yyyy-MM-dd"/> <br/>
+            <input type="text" name="eventDate" placeholder="e.g. 2016-03-18" pattern="[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|1[0-9]|2[0-9]|3[01])" title="yyyy-MM-dd"/> <br/>
             <input type="submit" value="Search" />
         </form>
     </div>
@@ -42,7 +42,7 @@
         </tbody>
     </table>
     <br><br>
-    <center><p3  align="center"><b>Available films are 'The Hateful Eight', 'Finding Dory' and 'Doom' for date '2016-03-18' (DEMO)!!!<b><p3></center><br/>
+    <center><p3 align="center"><b><font color="red">Available films are 'The Hateful Eight', 'Finding Dory' and 'Doom' for date '2016-03-18' (DEMO)!!!</font><b><p3></center><br/>
     </div>
 </body>
 </html>
