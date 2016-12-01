@@ -2,16 +2,17 @@ package com.epam.spring.theater.facade;
 
 import com.epam.spring.theater.dto.TicketDto;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 public interface BookingFacade {
 
-    BigDecimal getTicketPrice(String eventName, Date dateTime, Integer seat, Integer userId);
+    TicketDto discountTicketPrice(String userEmail, Integer ticketId);
 
-    void bookTicket(Integer userId, Integer ticketId);
+    TicketDto bookTicket(String userEmail, Integer ticketId);
 
     List<TicketDto> getTicketsForEvent(String eventName, Date date);
+
+    TicketDto getTicketById(Integer ticketId);
 
 }

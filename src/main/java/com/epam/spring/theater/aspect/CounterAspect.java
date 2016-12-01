@@ -42,7 +42,7 @@ public class CounterAspect {
         createOrUpdate(eventStatistic);
     }
 
-    @AfterReturning("execution(* com.epam.spring.theater.service.BookingService.getTicketPrice(..)) && args(event, dateTime, seat, user)")
+    @AfterReturning("execution(* com.epam.spring.theater.service.BookingService.discountTicketPrice(..)) && args(event, dateTime, seat, user)")
     private void countPriceQuery(Event event, Date dateTime, Integer seat, User user) {
         Optional<EventStatistic> optionalStatistic = Optional.ofNullable(eventStatisticDao.findByEventName(event.getName()));
         EventStatistic eventStatistic = incrementPriceQuery(optionalStatistic.orElse(new EventStatistic(event.getName())));

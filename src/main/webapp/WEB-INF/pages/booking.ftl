@@ -5,34 +5,32 @@
 </head>
 <body>
 <div>
+<#if ticket.booked != true>
     <div align="center">
-        <form name="search" action="tickets" method="get" align="left: 10px;">
-          	Event Name<br>
-          	<input type="text" name="eventName" placeholder="e.g. Doom"/> <br/>
-            Event Date<br>
-            <input type="text" name="eventDate" placeholder="e.g. 1990-03-18" title="yyyy-MM-dd"/> <br/>
-            <input type="submit" value="Search" />
+    <#if ticket.discounted == true>
+         <#assign action = 'reserve'>
+         <#assign submit = 'Book ticket'>
+         <#assign message = 'Please submit booking for'>
+    <#else>
+         <#assign action = 'discount'>
+         <#assign submit = 'Check for discount'>
+         <#assign message = 'Please enter your email to continue booking and check discounts for'>
+    </#if>
+
+    <center><p3  align="center">${message} '${ticket.eventName}'|seat:${ticket.seat}|price:${ticket.ticketPrice} hrn<p3></center><br/>
+        <form name="booking" action="${action}" method="post" align="left: 10px;">
+            <#if ticket.discounted != true>
+                <input type="text" name="userEmail" placeholder="email"/>
+            <#else>
+                <input type="hidden" name="userEmail" value='${userEmail}'/>
+            </#if>
+            <input type="hidden" name="ticketId" value='${ticket.ticketId}'/>
+            <input type="submit" value="${submit}" />
+            <br>
         </form>
     </div>
-    <center><p3  align="center">Search results for event '${eventName}' and date '${eventDate?date}'<p3></center>
-    <table border="1" align="center" style="width:50%">
-        <thead>
-            <tr>
-                <th>Ticket Id</th>
-                <th>Event Name</th>
-                <th>Ticket Price</th>
-            </tr>
-        </thead>
-        <tbody>
-            <#list tickets as ticket>
-                <tr>
-                    <td>${ticket.ticketId}</td>
-                    <td>${ticket.eventId}</td>
-                    <td>${ticket.ticketPrice}</td>
-                </tr>
-            </#list>
-        </tbody>
-    </table>
-    </div>
+<#else>
+    <center><p3  align="center">Ticket was successfully booked '${ticket.eventName}'|seat:${ticket.seat}|price:${ticket.ticketPrice}hrn by user with email ${userEmail}<p3></center><br/>
+</#if>
 </body>
 </html>

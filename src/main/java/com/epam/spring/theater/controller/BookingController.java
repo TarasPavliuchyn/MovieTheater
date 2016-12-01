@@ -9,9 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -22,26 +20,31 @@ public class BookingController {
     @Autowired
     private BookingFacade bookingFacade;
 
-    @RequestMapping(value = "/price", method = RequestMethod.GET)
-    public ModelAndView calculateTicketPrice(@RequestParam("userId") Integer userId,
-                                             @RequestParam("eventName") String eventName,
-                                             @RequestParam("seat") Integer seatNumber,
-                                             @DateTimeFormat(pattern = "yyyy-MM-dd") Date eventDate) {
-
-        BigDecimal ticketPrice = bookingFacade.getTicketPrice(eventName, eventDate, seatNumber, userId);
-        ModelAndView mav = new ModelAndView("booking");
-        mav.addObject("ticketPrice", ticketPrice);
-        return mav;
+    @RequestMapping(value = "/discount", method = RequestMethod.POST)
+    public String calculateTicketPrice(@RequestParam("userEmail") String userEmail,
+                                       @RequestParam("ticketId") Integer ticketId,
+                                       Model model) {
+        TicketDto ticket = bookingFacade.discountTicketPrice(userEmail, ticketId);
+        model.addAttribute("ticket", ticket);
+        model.addAttribute("userEmail", userEmail);
+        return "booking";
     }
 
-    @RequestMapping(value = "/reserve", method = RequestMethod.GET)
-    public String bookTicket(@RequestParam("userId") Integer userId,
+    @RequestMapping(value = "/reserve", method = RequestMethod.POST)
+    public String bookTicket(@RequestParam("userEmail") String userEmail,
                              @RequestParam("ticketId") Integer ticketId,
                              Model model) {
+        TicketDto ticket = bookingFacade.bookTicket(userEmail, ticketId);
+        model.addAttribute("ticket", ticket);
+        model.addAttribute("userEmail", userEmail);
+        return "booking";
+    }
 
-        bookingFacade.bookTicket(userId, ticketId);
-        model.addAttribute("booked", true);
-        return "redirect:booking";
+    @RequestMapping(value = "/ticket", method = RequestMethod.GET)
+    public String ticketDetails(@RequestParam("ticketId") Integer ticketId, Model model) {
+        TicketDto ticket = bookingFacade.getTicketById(ticketId);
+        model.addAttribute("ticket", ticket);
+        return "booking";
     }
 
     @RequestMapping(value = "/tickets", method = RequestMethod.GET)
@@ -52,7 +55,7 @@ public class BookingController {
         model.addAttribute("tickets", tickets);
         model.addAttribute("eventName", eventName);
         model.addAttribute("eventDate", eventDate);
-        return "booking";
+        return "ticketList";
     }
 
 }

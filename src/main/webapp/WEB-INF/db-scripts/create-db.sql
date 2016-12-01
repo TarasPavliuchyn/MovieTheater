@@ -70,6 +70,7 @@ CREATE TABLE IF NOT EXISTS ticket (
   event_date DATE NULL ,
   ticket_price DECIMAL(5,2) NULL ,
   user_id INT NULL,
+  seat INT NULL,
   PRIMARY KEY (ticket_id)  ,
   CONSTRAINT ticket_event_id_fk
     FOREIGN KEY (event_id)

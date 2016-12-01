@@ -46,9 +46,9 @@ public class BookingServiceImpl implements BookingService {
     private AuditoriumService auditoriumService;
 
     @Override
-    public BigDecimal getTicketPrice(String eventName, Date dateTime, Integer seat, Integer userId) {
+    public BigDecimal getTicketPrice(Integer eventId, Date dateTime, Integer seat, Integer userId) {
         BigDecimal basePrice = null;
-        Event event = eventDao.getByName(eventName);
+        Event event = eventDao.find(eventId);
         User user = userDao.find(userId);
         if (event != null) {
             basePrice = event.getBasePrice();
@@ -65,12 +65,19 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void bookTicket(User user, Ticket ticket) {
         ticket.setBooked(true);
+        ticket.setUserId(user.getUserId());
         ticketDao.update(ticket);
+        userDao.update(user);
     }
 
     @Override
     public List<Ticket> getTicketsForEvent(String eventName, Date date) {
         return ticketDao.getPurchasedTickets(eventName, date);
+    }
+
+    @Override
+    public Ticket getTicketById(Integer ticketId) {
+        return ticketDao.find(ticketId);
     }
 
     private BigDecimal upPriceForVIPSeat(Date dateTime, Integer seat, BigDecimal basePrice, Event event) {

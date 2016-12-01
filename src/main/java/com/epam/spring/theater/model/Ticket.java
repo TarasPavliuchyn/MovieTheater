@@ -18,4 +18,5 @@ public class Ticket implements Serializable {
     private Date dateTime;
     private BigDecimal ticketPrice;
     private Integer userId;
+    private Integer seat;
 }

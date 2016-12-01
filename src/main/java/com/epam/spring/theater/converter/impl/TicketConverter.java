@@ -1,12 +1,19 @@
 package com.epam.spring.theater.converter.impl;
 
 import com.epam.spring.theater.converter.AbstractConverter;
+import com.epam.spring.theater.dao.EventDao;
 import com.epam.spring.theater.dto.TicketDto;
 import com.epam.spring.theater.model.Ticket;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import static java.util.Optional.ofNullable;
 
 @Component
 public class TicketConverter extends AbstractConverter<Ticket, TicketDto> {
+
+    @Autowired
+    private EventDao eventDao;
 
     @Override
     public TicketDto convertToDto(Ticket ticket) {
@@ -14,11 +21,14 @@ public class TicketConverter extends AbstractConverter<Ticket, TicketDto> {
         ticketDto.setBooked(ticket.isBooked());
         ticketDto.setDateTime(ticket.getDateTime());
         ticketDto.setDiscounted(ticket.isDiscounted());
-        ticketDto.setEventId(ticket.getEventId());
+        ofNullable(eventDao.find(ticket.getEventId()))
+                .map(event -> event.getName())
+                .ifPresent(ticketDto::setEventName);
         ticketDto.setPurchased(ticket.isPurchased());
         ticketDto.setTicketId(ticket.getTicketId());
         ticketDto.setTicketPrice(ticket.getTicketPrice());
         ticketDto.setUserId(ticket.getUserId());
+        ticketDto.setSeat(ticket.getSeat());
         return ticketDto;
     }
 
@@ -28,11 +38,14 @@ public class TicketConverter extends AbstractConverter<Ticket, TicketDto> {
         ticket.setBooked(ticketDto.isBooked());
         ticket.setDateTime(ticketDto.getDateTime());
         ticket.setDiscounted(ticketDto.isDiscounted());
-        ticket.setEventId(ticketDto.getEventId());
+        ofNullable(eventDao.getByName(ticketDto.getEventName()))
+                .map(event -> event.getEventId())
+                .ifPresent(ticket::setEventId);
         ticket.setPurchased(ticketDto.isPurchased());
         ticket.setTicketId(ticketDto.getTicketId());
         ticket.setTicketPrice(ticketDto.getTicketPrice());
         ticket.setUserId(ticketDto.getUserId());
+        ticket.setSeat(ticketDto.getSeat());
         return ticket;
     }
 }

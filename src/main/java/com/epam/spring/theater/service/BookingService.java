@@ -9,9 +9,11 @@ import java.util.List;
 
 public interface BookingService {
 
-    BigDecimal getTicketPrice(String eventName, Date dateTime, Integer seat, Integer userId);
+    BigDecimal getTicketPrice(Integer eventId, Date dateTime, Integer seat, Integer userId);
 
     void bookTicket(User user, Ticket ticket);
 
     List<Ticket> getTicketsForEvent(String event, Date date);
+
+    Ticket getTicketById(Integer ticketId);
 }
