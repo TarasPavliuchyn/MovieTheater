@@ -2,6 +2,7 @@ package com.epam.spring.theater.converter.impl;
 
 import com.epam.spring.theater.converter.AbstractConverter;
 import com.epam.spring.theater.dao.EventDao;
+import com.epam.spring.theater.dto.EventDto;
 import com.epam.spring.theater.dto.TicketDto;
 import com.epam.spring.theater.model.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ public class TicketConverter extends AbstractConverter<Ticket, TicketDto> {
     @Autowired
     private EventDao eventDao;
 
+    @Autowired
+    private EventConverter eventConverter;
+
     @Override
     public TicketDto convertToDto(Ticket ticket) {
         TicketDto ticketDto = new TicketDto();
@@ -22,8 +26,8 @@ public class TicketConverter extends AbstractConverter<Ticket, TicketDto> {
         ticketDto.setDateTime(ticket.getDateTime());
         ticketDto.setDiscounted(ticket.isDiscounted());
         ofNullable(eventDao.find(ticket.getEventId()))
-                .map(event -> event.getName())
-                .ifPresent(ticketDto::setEventName);
+                .map(eventConverter::convertToDto)
+                .ifPresent(ticketDto::setEvent);
         ticketDto.setPurchased(ticket.isPurchased());
         ticketDto.setTicketId(ticket.getTicketId());
         ticketDto.setTicketPrice(ticket.getTicketPrice());
@@ -38,7 +42,9 @@ public class TicketConverter extends AbstractConverter<Ticket, TicketDto> {
         ticket.setBooked(ticketDto.isBooked());
         ticket.setDateTime(ticketDto.getDateTime());
         ticket.setDiscounted(ticketDto.isDiscounted());
-        ofNullable(eventDao.getByName(ticketDto.getEventName()))
+        ofNullable(ticketDto.getEvent())
+                .map(EventDto::getName)
+                .map(eventDao::getByName)
                 .map(event -> event.getEventId())
                 .ifPresent(ticket::setEventId);
         ticket.setPurchased(ticketDto.isPurchased());

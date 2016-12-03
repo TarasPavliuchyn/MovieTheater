@@ -33,6 +33,12 @@
         <property name="suffix" value=".ftl"/>
     </bean>
 
+    <bean class="org.springframework.web.servlet.view.XmlViewResolver">
+        <property name="location">
+            <value>/WEB-INF/pdf-views.xml</value>
+        </property>
+    </bean>
+
 
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">

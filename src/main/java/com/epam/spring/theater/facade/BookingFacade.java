@@ -15,4 +15,5 @@ public interface BookingFacade {
 
     TicketDto getTicketById(Integer ticketId);
 
+    List<TicketDto> getBookedTickets(String userEmail);
 }

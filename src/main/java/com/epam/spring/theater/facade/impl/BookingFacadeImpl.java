@@ -31,7 +31,6 @@ public class BookingFacadeImpl implements BookingFacade {
     private TicketDao ticketDao;
 
     @Override
-
     public TicketDto discountTicketPrice(String userEmail, Integer ticketId) {
         Ticket ticket = bookingService.getTicketById(ticketId);
         Integer userId = userService.getUserByEmail(userEmail).getUserId();
@@ -59,5 +58,12 @@ public class BookingFacadeImpl implements BookingFacade {
     public TicketDto getTicketById(Integer ticketId) {
         Ticket ticket = bookingService.getTicketById(ticketId);
         return ticketConverter.convertToDto(ticket);
+    }
+
+    @Override
+    public List<TicketDto> getBookedTickets(String userEmail) {
+        User user = userService.getUserByEmail(userEmail);
+        List<Ticket> tickets = userService.getBookedTickets(user.getUserId());
+        return ticketConverter.toDtoList(tickets);
     }
 }

@@ -20,8 +20,9 @@
             <tr>
                 <th>Ticket #</th>
                 <th>Event Name</th>
+                <th>Event Rate</th>
                 <th>Seat</th>
-                <th>Ticket Price</th>
+                <th>Event Base Price</th>
                 <th>Discounted</th>
                 <th>Purchased</th>
                 <th>Booked</th>
@@ -31,9 +32,10 @@
             <#list tickets as ticket>
                 <tr>
                     <td>${ticket?counter}</td>
-                    <td>${ticket.eventName}</td>
+                    <td>${ticket.event.name}</td>
+                    <td>${ticket.event.rating}</td>
                     <td>${ticket.seat}</td>
-                    <td>${ticket.ticketPrice}</td>
+                    <td>${ticket.event.basePrice}</td>
                     <td><#if ticket.discounted>Yes<#else>No</#if></td>
                     <td><#if ticket.purchased>Yes<#else>No</a></#if></td>
                     <td><#if ticket.booked>Yes<#else><a href="ticket?ticketId=${ticket.ticketId}">Book</a></#if></td>

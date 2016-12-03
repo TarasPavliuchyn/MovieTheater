@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
 import java.util.List;
@@ -45,6 +46,14 @@ public class BookingController {
         TicketDto ticket = bookingFacade.getTicketById(ticketId);
         model.addAttribute("ticket", ticket);
         return "booking";
+    }
+
+    @RequestMapping(value = "/ticket/pdf", method = RequestMethod.GET)
+    public ModelAndView getBookedTickets(String userEmail) {
+        List<TicketDto> tickets = bookingFacade.getBookedTickets(userEmail);
+        ModelAndView mav = new ModelAndView("pdfView", "tickets", tickets);
+        mav.addObject("userEmail", userEmail);
+        return mav;
     }
 
     @RequestMapping(value = "/tickets", method = RequestMethod.GET)

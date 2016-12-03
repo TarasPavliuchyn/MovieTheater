@@ -10,7 +10,7 @@ import java.util.Date;
 @Setter
 public class TicketDto {
     private Integer ticketId;
-    private String eventName;
+    private EventDto event;
     private Integer userId;
     private boolean purchased;
     private boolean booked;
