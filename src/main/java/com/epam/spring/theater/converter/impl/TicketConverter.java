@@ -4,9 +4,12 @@ import com.epam.spring.theater.converter.AbstractConverter;
 import com.epam.spring.theater.dao.EventDao;
 import com.epam.spring.theater.dto.EventDto;
 import com.epam.spring.theater.dto.TicketDto;
+import com.epam.spring.theater.model.Event;
 import com.epam.spring.theater.model.Ticket;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Map;
 
 import static java.util.Optional.ofNullable;
 
@@ -25,9 +28,14 @@ public class TicketConverter extends AbstractConverter<Ticket, TicketDto> {
         ticketDto.setBooked(ticket.isBooked());
         ticketDto.setDateTime(ticket.getDateTime());
         ticketDto.setDiscounted(ticket.isDiscounted());
-        ofNullable(eventDao.find(ticket.getEventId()))
+        Event event = eventDao.find(ticket.getEventId());
+        ofNullable(event)
                 .map(eventConverter::convertToDto)
                 .ifPresent(ticketDto::setEvent);
+        ofNullable(event)
+                .map(Event::getSchedule)
+                .map(schedule -> schedule.get(ticket.getDateTime()))
+                .ifPresent(ticketDto::setAuditoriumName);
         ticketDto.setPurchased(ticket.isPurchased());
         ticketDto.setTicketId(ticket.getTicketId());
         ticketDto.setTicketPrice(ticket.getTicketPrice());

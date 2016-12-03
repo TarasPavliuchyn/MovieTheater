@@ -19,10 +19,11 @@
         <thead>
             <tr>
                 <th>Ticket #</th>
-                <th>Event Name</th>
-                <th>Event Rate</th>
+                <th>Name</th>
+                <th>Auditorium</th>
+                <th>Rate</th>
                 <th>Seat</th>
-                <th>Event Base Price</th>
+                <th>Base Price</th>
                 <th>Discounted</th>
                 <th>Purchased</th>
                 <th>Booked</th>
@@ -33,6 +34,7 @@
                 <tr>
                     <td>${ticket?counter}</td>
                     <td>${ticket.event.name}</td>
+                    <td>${ticket.auditoriumName}</td>
                     <td>${ticket.event.rating}</td>
                     <td>${ticket.seat}</td>
                     <td>${ticket.event.basePrice}</td>

@@ -27,25 +27,27 @@ public class PdfView extends AbstractPdfView {
                                     HttpServletRequest request, HttpServletResponse response) throws Exception {
 
         List<TicketDto> tickets = (List<TicketDto>) model.get("tickets");
-        PdfPTable table = new PdfPTable(6);
+        PdfPTable table = new PdfPTable(7);
         PdfPCell cell;
         cell = new PdfPCell(new Phrase(format("All tickets are booked by %s", model.get("userEmail"))));
-        cell.setColspan(6);
+        cell.setColspan(7);
         table.addCell(cell);
         table.addCell("#");
         table.addCell("Name");
+        table.addCell("Hall");
         table.addCell("Rate");
         table.addCell("Price");
         table.addCell("Seat");
         table.addCell("Date");
         int counter = 0;
-        for (TicketDto entry : tickets) {
+        for (TicketDto ticket : tickets) {
             table.addCell(String.valueOf(++counter));
-            ofNullable(entry.getEvent()).map(EventDto::getName).ifPresent(table::addCell);
-            ofNullable(entry.getEvent()).map(EventDto::getRating).map(Rating::name).ifPresent(table::addCell);
-            ofNullable(entry.getTicketPrice()).map(BigDecimal::toString).ifPresent(table::addCell);
-            ofNullable(entry.getSeat()).map(seat -> seat.toString()).ifPresent(table::addCell);
-            ofNullable(entry.getDateTime()).map(Date::toString).ifPresent(table::addCell);
+            ofNullable(ticket.getEvent()).map(EventDto::getName).ifPresent(table::addCell);
+            table.addCell(ticket.getAuditoriumName());
+            ofNullable(ticket.getEvent()).map(EventDto::getRating).map(Rating::name).ifPresent(table::addCell);
+            ofNullable(ticket.getTicketPrice()).map(BigDecimal::toString).ifPresent(table::addCell);
+            ofNullable(ticket.getSeat()).map(seat -> seat.toString()).ifPresent(table::addCell);
+            ofNullable(ticket.getDateTime()).map(Date::toString).ifPresent(table::addCell);
         }
         document.add(table);
     }

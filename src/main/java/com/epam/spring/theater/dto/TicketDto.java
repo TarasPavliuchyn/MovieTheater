@@ -18,4 +18,5 @@ public class TicketDto {
     private Date dateTime;
     private BigDecimal ticketPrice;
     private Integer seat;
+    private String auditoriumName;
 }
