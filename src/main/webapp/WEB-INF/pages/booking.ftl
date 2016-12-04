@@ -33,7 +33,7 @@
         </form>
     </div>
     <br><br>
-    <center><p3  align="center"><b><font color="red">Please use 'Taras_Pavliuchyn@epam.com' or 'Anton_Yaskou@epam.com' for demo!!!</font<b><p3></center><br/>
+    <center><p3  align="center"><b><font color="red">Please use 'Taras_Pavliuchyn@epam.com' or 'test@epam.com' for demo!!!</font<b><p3></center><br/>
 <#else>
     <center><p3>Ticket was successfully booked '${ticket.event.name}'|seat:${ticket.seat}|price:${ticket.ticketPrice}hrn.<p3></center><br/>
     <center><p3><a href="ticket/pdf?userEmail=${userEmail}">Show all tickets for user ${userEmail}</a><p3></center><br/>

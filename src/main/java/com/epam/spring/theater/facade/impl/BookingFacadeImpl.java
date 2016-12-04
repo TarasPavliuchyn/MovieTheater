@@ -34,8 +34,9 @@ public class BookingFacadeImpl implements BookingFacade {
     public TicketDto discountTicketPrice(String userEmail, Integer ticketId) {
         Ticket ticket = bookingService.getTicketById(ticketId);
         Integer userId = userService.getUserByEmail(userEmail).getUserId();
-        BigDecimal priceWithDiscount = bookingService.getTicketPrice(ticket.getEventId(), ticket.getDateTime(), ticket.getSeat(), userId);
-        ticket.setTicketPrice(priceWithDiscount.setScale(2, BigDecimal.ROUND_HALF_UP));
+        BigDecimal discount = bookingService.calculateTicketDiscount(ticket.getEventId(), ticket.getDateTime(), ticket.getSeat(), userId);
+        BigDecimal priceWithDiscount = ticket.getTicketPrice().subtract(discount).setScale(2, BigDecimal.ROUND_HALF_UP);
+        ticket.setTicketPrice(priceWithDiscount);
         ticket.setDiscounted(true);
         return ticketConverter.convertToDto(ticketDao.update(ticket));
     }

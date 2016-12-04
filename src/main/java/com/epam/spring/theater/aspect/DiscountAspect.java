@@ -28,11 +28,11 @@ public class DiscountAspect {
     private void inDiscountService() {
     }
 
-    @Pointcut("execution(* *.getDiscount(..))")
+    @Pointcut("execution(* *.calculateDiscount(..))")
     private void getDiscount() {
     }
 
-    @AfterReturning(pointcut = "getDiscount() && inDiscountService()", returning = "discount")
+    //@AfterReturning(pointcut = "calculateDiscount() && inDiscountService()", returning = "discount")
     private void countDiscountStatistic(JoinPoint jp, Object discount) {
         User user = (User) jp.getArgs()[0];
         Map<Ticket, Map.Entry<DiscountType, BigDecimal>> disc = (Map<Ticket, Map.Entry<DiscountType, BigDecimal>>) discount;

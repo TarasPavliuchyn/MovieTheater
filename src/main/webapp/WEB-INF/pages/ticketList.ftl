@@ -37,7 +37,7 @@
                     <td>${ticket.auditoriumName}</td>
                     <td>${ticket.event.rating}</td>
                     <td>${ticket.seat}</td>
-                    <td>${ticket.event.basePrice}</td>
+                    <td>${ticket.ticketPrice}</td>
                     <td><#if ticket.discounted>Yes<#else>No</#if></td>
                     <td><#if ticket.purchased>Yes<#else>No</a></#if></td>
                     <td><#if ticket.booked>Yes<#else><a href="ticket?ticketId=${ticket.ticketId}">Book</a></#if></td>
