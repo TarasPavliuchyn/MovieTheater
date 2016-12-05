@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Lion King",
+    "basePrice": 100,
+    "rating": "HIGH"
+  },
+  {
+    "name": "Lion King II",
+    "basePrice": 120,
+    "rating": "LOW"
+  }
+]

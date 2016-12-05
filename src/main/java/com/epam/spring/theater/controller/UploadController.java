@@ -56,13 +56,13 @@ public class UploadController {
 
     @RequestMapping(value = "/events", method = RequestMethod.GET)
     public String multiFileEventUpload(ModelMap model) throws IOException {
-        model.addAttribute("upload", "events");
+        model.addAttribute("action", "events");
         return "upload";
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String multiFileUserUpload(ModelMap model) throws IOException {
-        model.addAttribute("upload", "users");
+        model.addAttribute("action", "users");
         return "upload";
     }
 

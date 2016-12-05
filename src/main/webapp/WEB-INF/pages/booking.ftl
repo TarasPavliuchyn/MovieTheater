@@ -5,7 +5,11 @@
 </head>
 <body>
 <div>
-<center><a href="tickets?eventName=Finding+Dory&eventDate=2016-03-18">One more ticket</a><center>
+    <center>
+        <br>
+        <a href="/">Home page</a>
+        <a href="tickets?eventName=Finding+Dory&eventDate=2016-03-18">One more ticket</a>
+    <center>
 <#if ticket.booked != true>
     <div align="center">
     <#if ticket.discounted == true>

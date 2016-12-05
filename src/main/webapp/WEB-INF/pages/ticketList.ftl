@@ -6,6 +6,7 @@
 <body>
 <div>
     <div align="center">
+        <a href="/">Home page</a><br>
         <form name="search" action="tickets" method="get" align="left: 10px;">
           	Event Name<br>
           	<input type="text" name="eventName" placeholder="e.g. Doom"/> <br/>

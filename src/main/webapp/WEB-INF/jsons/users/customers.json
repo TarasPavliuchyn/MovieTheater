@@ -1,0 +1,9 @@
+[
+  {
+    "email": "customer@epam.com",
+    "password": "customer",
+    "fullName": "Customer",
+    "birthDay": "1988-04-16",
+    "role": "CUSTOMER"
+  }
+]
