@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class EventFacadeImpl implements EventFacade {
     @Override
     public Collection<EventDto> findAll() {
         List<Event> events = eventService.findAll().stream().collect(Collectors.toList());
-        Collections.<Event>sort(events, (e1, e2) -> e1.getName().compareTo(e2.getName()));
+        Collections.sort(events, Comparator.comparing(Event::getName));
         return eventConverter.toDtoList(events);
     }
 }

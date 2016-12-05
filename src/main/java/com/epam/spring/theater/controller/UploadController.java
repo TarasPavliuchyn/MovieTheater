@@ -1,7 +1,9 @@
 package com.epam.spring.theater.controller;
 
 import com.epam.spring.theater.dto.EventDto;
+import com.epam.spring.theater.dto.UserDto;
 import com.epam.spring.theater.facade.EventFacade;
+import com.epam.spring.theater.facade.UserFacade;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,21 +25,44 @@ public class UploadController {
     @Autowired
     private EventFacade eventFacade;
 
+    @Autowired
+    private UserFacade userFacade;
+
     @RequestMapping(value = "/events", method = RequestMethod.POST)
-    public String multiFileUpload(@RequestParam("fileUpload") CommonsMultipartFile[] fileUpload, ModelMap model) throws IOException {
+    public String multiFileEventUpload(@RequestParam("fileUpload") CommonsMultipartFile[] fileUpload, ModelMap model) throws IOException {
         if (validateUploadRequest(fileUpload)) {
             model.addAttribute("error", "Missing file");
             return "upload";
         } else {
-            List<EventDto> events = extractEventDtos(fileUpload);
+            List<EventDto> events = extractEventDtos(fileUpload, EventDto.class);
             eventFacade.saveList(events);
             model.addAttribute("events", eventFacade.findAll());
             return "eventList";
         }
     }
 
+    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    public String multiFileUserUpload(@RequestParam("fileUpload") CommonsMultipartFile[] fileUpload, ModelMap model) throws IOException {
+        if (validateUploadRequest(fileUpload)) {
+            model.addAttribute("error", "Missing file");
+            return "upload";
+        } else {
+            List<UserDto> users = extractEventDtos(fileUpload, UserDto.class);
+            userFacade.saveList(users);
+            model.addAttribute("users", userFacade.findAll());
+            return "userList";
+        }
+    }
+
     @RequestMapping(value = "/events", method = RequestMethod.GET)
-    public String multiFileUpload(ModelMap model) throws IOException {
+    public String multiFileEventUpload(ModelMap model) throws IOException {
+        model.addAttribute("upload", "events");
+        return "upload";
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public String multiFileUserUpload(ModelMap model) throws IOException {
+        model.addAttribute("upload", "users");
         return "upload";
     }
 
@@ -50,10 +75,10 @@ public class UploadController {
         return false;
     }
 
-    private List<EventDto> extractEventDtos(CommonsMultipartFile[] fileUpload) throws IOException {
+    private <T> List<T> extractEventDtos(CommonsMultipartFile[] fileUpload, Class<T> dtoClass) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, EventDto.class);
-        List<EventDto> events = new ArrayList<>();
+        CollectionType collectionType = mapper.getTypeFactory().constructCollectionType(List.class, dtoClass);
+        List<T> events = new ArrayList<>();
         for (CommonsMultipartFile aFile : fileUpload) {
             events.addAll(mapper.readValue(aFile.getBytes(), collectionType));
         }
