@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Destination",
+    "basePrice": 190,
+    "rating": "HIGH"
+  },
+  {
+    "name": "Destination II",
+    "basePrice": 150,
+    "rating": "HIGH"
+  }
+]

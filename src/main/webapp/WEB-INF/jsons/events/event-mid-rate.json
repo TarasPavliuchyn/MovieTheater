@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Spider-Man",
+    "basePrice": 110,
+    "rating": "MID"
+  },
+  {
+    "name": "Spider-Man-2",
+    "basePrice": 130,
+    "rating": "MID"
+  }
+]
