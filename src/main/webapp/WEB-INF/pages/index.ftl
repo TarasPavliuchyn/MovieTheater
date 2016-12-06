@@ -9,6 +9,7 @@
     <ul>
       <li>To <a href="booking/tickets?eventName=Finding+Dory&eventDate=2016-03-18">Booking operations</a>.
       <li>To <a href="upload/events">Upload events</a>.
+      <li>To <a href="upload/users">Upload users</a>.
       <li>To <a href="events">List of events</a>.
       <li>To <a href="users">List of users</a>.
     </ul>
