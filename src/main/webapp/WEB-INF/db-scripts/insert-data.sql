@@ -5,7 +5,8 @@ VALUES ('The Hateful Eight',100,'HIGH'),
 
 INSERT INTO schedule (event_id, auditorium, event_date)
 VALUES (1,'Red','2016-03-18'),
-       (2,'Red','2016-03-18');
+       (2,'Red','2016-03-18'),
+       (3,'Red','2016-03-18');
 
 INSERT INTO user (user_id, email, password, full_name, birthday, user_role)
 VALUES (1,'Taras_Pavliuchyn@epam.com','qwerty','Taras Pavliuchyn', '1990-03-18', 'CUSTOMER'),

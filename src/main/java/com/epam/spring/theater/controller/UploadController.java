@@ -32,6 +32,7 @@ public class UploadController {
     public String multiFileEventUpload(@RequestParam("fileUpload") CommonsMultipartFile[] fileUpload, ModelMap model) throws IOException {
         if (validateUploadRequest(fileUpload)) {
             model.addAttribute("error", "Missing file");
+            model.addAttribute("action", "events");
             return "upload";
         } else {
             List<EventDto> events = extractEventDtos(fileUpload, EventDto.class);
@@ -45,6 +46,7 @@ public class UploadController {
     public String multiFileUserUpload(@RequestParam("fileUpload") CommonsMultipartFile[] fileUpload, ModelMap model) throws IOException {
         if (validateUploadRequest(fileUpload)) {
             model.addAttribute("error", "Missing file");
+            model.addAttribute("action", "users");
             return "upload";
         } else {
             List<UserDto> users = extractEventDtos(fileUpload, UserDto.class);

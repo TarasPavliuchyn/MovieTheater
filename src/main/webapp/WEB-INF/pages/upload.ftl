@@ -4,7 +4,7 @@
   </head>
   <center>
   <a href="/">Home page</a><br>
-   <p3>Uploading ${action} into the system (~\MovieTheater\src\main\webapp\WEB-INF\jsons\${action})<p3>
+   <p3>Uploading ${action} into the system (MovieTheater\src\main\webapp\WEB-INF\jsons\${action})<p3>
    <#if error??>
    <br>
         <p3><font color="red">Error with message '${error}'.</font><p3>
