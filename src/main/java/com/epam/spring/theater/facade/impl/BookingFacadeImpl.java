@@ -41,7 +41,7 @@ public class BookingFacadeImpl implements BookingFacade {
         try {
             userId = userService.getUserByEmail(userEmail).getUserId();
         } catch (EmptyResultDataAccessException ex) {
-            throw new UserNotFoundException(format("User '%s' mot found", userEmail), ex);
+            throw new UserNotFoundException(format("User '%s' is not found", userEmail), ex);
         }
         BigDecimal discount = bookingService.calculateTicketDiscount(ticket.getEventId(), ticket.getDateTime(), ticket.getSeat(), userId);
         BigDecimal priceWithDiscount = ticket.getTicketPrice().subtract(discount).setScale(2, BigDecimal.ROUND_HALF_UP);
